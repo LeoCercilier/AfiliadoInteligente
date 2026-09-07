@@ -582,8 +582,18 @@ listType: undefined,
 sortType: undefined
 };
 Object.keys(body).forEach(k => body[k] === undefined && delete body[k]);
+const session = estado.session || (await supabaseClient.auth.getSession()).data.session;
+
+if (!session?.access_token) {
+  mostrarErroAuth('Sua sessão expirou. Faça login novamente.');
+  return;
+}
+
 const { data, error } = await supabaseClient.functions.invoke('shopee-products-v2', {
-body
+  body,
+  headers: {
+    Authorization: `Bearer ${session.access_token}`
+  }
 });
 if (error) {
 console.error('Edge Function error:', error);
