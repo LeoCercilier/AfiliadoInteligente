@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="Descubra produtos com potencial de divulgacao - Afiliado Inteligente" />
+  <meta name="description" content="Descubra produtos com potencial de divulgação - Afiliado Inteligente" />
   <meta name="theme-color" content="#0f172a" />
   <title>Descobrir Produtos | Afiliado Inteligente</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -11,11 +11,152 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
-  <!-- FULL FILE: see artifacts - attempting full push via follow-up if needed -->
-  <style>body{font-family:Inter,system-ui,sans-serif;background:#0b1220;color:#f1f5f9;margin:0;padding:20px}h1{color:#22c55e}</style>
+  <link rel="stylesheet" href="produtos.css" />
 </head>
 <body>
-  <h1>Carregando versao completa...</h1>
-  <p>Se voce ve esta mensagem, o push completo falhou por limite de tamanho. Baixe o arquivo local.</p>
+  <div class="loading-bar" id="loadingBar"></div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="dashboard.html" class="brand" title="Voltar ao Dashboard">
+        <span class="brand-icon">AI</span>
+        <span>Afiliado Inteligente</span>
+      </a>
+      <div class="header-actions">
+        <span class="auth-badge" id="authBadge">
+          <span class="auth-dot"></span>
+          <span id="authLabel">Conectado</span>
+        </span>
+        <a href="dashboard.html" class="btn btn-ghost btn-sm">← Dashboard</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-header">
+      <h1 class="page-title">Descobrir Produtos</h1>
+      <p class="page-subtitle">Encontre produtos com potencial real de divulgação. Use filtros e o score inteligente para priorizar o que vale a pena promover.</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-bar" id="statsBar">
+      <div class="stat-card">
+        <div class="stat-label">Produtos encontrados</div>
+        <div class="stat-value" id="statTotal">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Melhor Score</div>
+        <div class="stat-value highlight" id="statBestScore">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Maior comissão</div>
+        <div class="stat-value" id="statBestCommission">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Mais vendido</div>
+        <div class="stat-value" id="statBestSales">—</div>
+      </div>
+    </div>
+
+    <div class="main-layout">
+      <!-- SIDEBAR FILTERS (desktop) -->
+      <aside class="filters-sidebar" id="filtersSidebar">
+        <div class="search-section">
+          <div class="filter-group" style="margin-bottom:12px">
+            <label class="filter-label" for="keywordSidebar">Busca</label>
+            <div class="search-input-wrap">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="keywordSidebar" class="search-input" placeholder="Digite o nome do produto..." autocomplete="off" />
+            </div>
+          </div>
+          <div class="filters-panel open" id="filtersPanelDesktop">
+            <!-- filters injected -->
+          </div>
+        </div>
+      </aside>
+
+      <div class="content-area">
+        <!-- SEARCH (mobile + shared) -->
+        <div class="search-section" id="searchSection">
+          <div class="search-row">
+            <div class="search-input-wrap">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="keywordInput" class="search-input" placeholder="Digite o nome do produto..." autocomplete="off" />
+            </div>
+            <button type="button" class="btn btn-primary" id="btnBuscar">Buscar</button>
+            <button type="button" class="btn btn-ghost" id="btnLimpar" title="Limpar busca e filtros">Limpar</button>
+            <button type="button" class="filters-toggle mobile-only-filters" id="btnFiltros" aria-expanded="false">
+              Filtros <span class="filters-badge hidden" id="filtersBadge">0</span>
+            </button>
+          </div>
+          <div class="filters-panel" id="filtersPanelMobile">
+            <!-- filters injected -->
+          </div>
+        </div>
+
+        <!-- TOOLBAR -->
+        <div class="toolbar">
+          <div class="results-info" id="resultsInfo">Faça uma busca para descobrir produtos</div>
+          <div class="sort-wrap">
+            <label class="sort-label" for="sortSelect">Ordenar</label>
+            <select id="sortSelect" class="sort-select">
+              <option value="score">Melhor oportunidade</option>
+              <option value="sales">Mais vendidos</option>
+              <option value="commission">Maior comissão</option>
+              <option value="discount">Maior desconto</option>
+              <option value="rating">Melhor avaliação</option>
+              <option value="price_asc">Menor preço</option>
+              <option value="price_desc">Maior preço</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- LOADING SKELETON -->
+        <div class="skeleton-grid hidden" id="skeletonGrid">
+          <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div><div class="skeleton-line h20 w40"></div></div></div>
+          <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div><div class="skeleton-line h20 w40"></div></div></div>
+          <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div><div class="skeleton-line h20 w40"></div></div></div>
+          <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div><div class="skeleton-line h20 w40"></div></div></div>
+        </div>
+
+        <!-- EMPTY / ERROR -->
+        <div class="state-box hidden" id="stateBox">
+          <div class="state-icon" id="stateIcon">🔍</div>
+          <div class="state-title" id="stateTitle">Nenhum produto encontrado</div>
+          <p class="state-desc" id="stateDesc">Tente outro termo ou altere os filtros.</p>
+          <button type="button" class="btn btn-primary" id="btnRetry" style="display:none">Tentar novamente</button>
+        </div>
+
+        <!-- PRODUCTS -->
+        <div class="products-grid" id="productsGrid"></div>
+
+        <!-- PAGINATION -->
+        <div class="pagination hidden" id="pagination">
+          <button type="button" class="btn btn-secondary btn-sm" id="btnPrev" disabled>← Anterior</button>
+          <span class="page-indicator" id="pageIndicator">Página 1</span>
+          <button type="button" class="btn btn-secondary btn-sm" id="btnNext" disabled>Próxima →</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- PRODUCT DETAIL MODAL -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalTitle">Detalhes do produto</h2>
+        <button type="button" class="modal-close" id="modalClose" aria-label="Fechar">×</button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- filled by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- TOASTS -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="produtos.js"></script>
 </body>
 </html>
