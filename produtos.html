@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="Descubra produtos com potencial de divulgação - Afiliado Inteligente" />
+  <meta name="description" content="Descubra produtos com potencial de divulgacao - Afiliado Inteligente" />
   <meta name="theme-color" content="#0f172a" />
   <title>Descobrir Produtos | Afiliado Inteligente</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -26,20 +26,20 @@
           <span class="auth-dot"></span>
           <span id="authLabel">Conectado</span>
         </span>
-        <a href="dashboard.html" class="btn btn-ghost btn-sm">← Dashboard</a>
+        <a href="dashboard.html" class="btn btn-ghost btn-sm">\u2190 Dashboard</a>
       </div>
     </div>
   </header>
   <main class="main">
     <div class="page-header">
       <h1 class="page-title">Descobrir Produtos</h1>
-      <p class="page-subtitle">Encontre produtos com potencial real de divulgação. Use filtros e o score inteligente para priorizar o que vale a pena promover.</p>
+      <p class="page-subtitle">Encontre produtos com potencial real de divulgacao. Use filtros e o score inteligente para priorizar o que vale a pena promover.</p>
     </div>
     <div class="stats-bar" id="statsBar">
-      <div class="stat-card"><div class="stat-label">Produtos encontrados</div><div class="stat-value" id="statTotal">—</div></div>
-      <div class="stat-card"><div class="stat-label">Melhor Score</div><div class="stat-value highlight" id="statBestScore">—</div></div>
-      <div class="stat-card"><div class="stat-label">Maior comissão</div><div class="stat-value" id="statBestCommission">—</div></div>
-      <div class="stat-card"><div class="stat-label">Mais vendido</div><div class="stat-value" id="statBestSales">—</div></div>
+      <div class="stat-card"><div class="stat-label">Produtos encontrados</div><div class="stat-value" id="statTotal">\u2014</div></div>
+      <div class="stat-card"><div class="stat-label">Melhor Score</div><div class="stat-value highlight" id="statBestScore">\u2014</div></div>
+      <div class="stat-card"><div class="stat-label">Maior comissao</div><div class="stat-value" id="statBestCommission">\u2014</div></div>
+      <div class="stat-card"><div class="stat-label">Mais vendido</div><div class="stat-value" id="statBestSales">\u2014</div></div>
     </div>
     <div class="main-layout">
       <aside class="filters-sidebar" id="filtersSidebar">
@@ -47,7 +47,7 @@
           <div class="filter-group" style="margin-bottom:12px">
             <label class="filter-label" for="keywordSidebar">Busca</label>
             <div class="search-input-wrap">
-              <span class="search-icon">🔍</span>
+              <span class="search-icon">\ud83d\udd0d</span>
               <input type="text" id="keywordSidebar" class="search-input" placeholder="Digite o nome do produto..." autocomplete="off" />
             </div>
           </div>
@@ -58,7 +58,7 @@
         <div class="search-section" id="searchSection">
           <div class="search-row">
             <div class="search-input-wrap">
-              <span class="search-icon">🔍</span>
+              <span class="search-icon">\ud83d\udd0d</span>
               <input type="text" id="keywordInput" class="search-input" placeholder="Digite o nome do produto..." autocomplete="off" />
             </div>
             <button type="button" class="btn btn-primary" id="btnBuscar">Buscar</button>
@@ -68,17 +68,17 @@
           <div class="filters-panel" id="filtersPanelMobile"></div>
         </div>
         <div class="toolbar">
-          <div class="results-info" id="resultsInfo">Faça uma busca para descobrir produtos</div>
+          <div class="results-info" id="resultsInfo">Faca uma busca para descobrir produtos</div>
           <div class="sort-wrap">
             <label class="sort-label" for="sortSelect">Ordenar</label>
             <select id="sortSelect" class="sort-select">
               <option value="score">Melhor oportunidade</option>
               <option value="sales">Mais vendidos</option>
-              <option value="commission">Maior comissão</option>
+              <option value="commission">Maior comissao</option>
               <option value="discount">Maior desconto</option>
-              <option value="rating">Melhor avaliação</option>
-              <option value="price_asc">Menor preço</option>
-              <option value="price_desc">Maior preço</option>
+              <option value="rating">Melhor avaliacao</option>
+              <option value="price_asc">Menor preco</option>
+              <option value="price_desc">Maior preco</option>
             </select>
           </div>
         </div>
@@ -89,16 +89,16 @@
           <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div><div class="skeleton-line h20 w40"></div></div></div>
         </div>
         <div class="state-box hidden" id="stateBox">
-          <div class="state-icon" id="stateIcon">🔍</div>
+          <div class="state-icon" id="stateIcon">\ud83d\udd0d</div>
           <div class="state-title" id="stateTitle">Nenhum produto encontrado</div>
           <p class="state-desc" id="stateDesc">Tente outro termo ou altere os filtros.</p>
           <button type="button" class="btn btn-primary" id="btnRetry" style="display:none">Tentar novamente</button>
         </div>
         <div class="products-grid" id="productsGrid"></div>
         <div class="pagination hidden" id="pagination">
-          <button type="button" class="btn btn-secondary btn-sm" id="btnPrev" disabled>← Anterior</button>
-          <span class="page-indicator" id="pageIndicator">Página 1</span>
-          <button type="button" class="btn btn-secondary btn-sm" id="btnNext" disabled>Próxima →</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="btnPrev" disabled>\u2190 Anterior</button>
+          <span class="page-indicator" id="pageIndicator">Pagina 1</span>
+          <button type="button" class="btn btn-secondary btn-sm" id="btnNext" disabled>Proxima \u2192</button>
         </div>
       </div>
     </div>
@@ -107,12 +107,13 @@
     <div class="modal" id="modal">
       <div class="modal-header">
         <h2 class="modal-title" id="modalTitle">Detalhes do produto</h2>
-        <button type="button" class="modal-close" id="modalClose" aria-label="Fechar">×</button>
+        <button type="button" class="modal-close" id="modalClose" aria-label="Fechar">\u00d7</button>
       </div>
       <div class="modal-body" id="modalBody"></div>
     </div>
   </div>
   <div class="toast-container" id="toastContainer"></div>
-  <script src="produtos.js"></script>
+  <script src="produtos-core.js"></script>
+  <script src="produtos-ui.js"></script>
 </body>
 </html>
