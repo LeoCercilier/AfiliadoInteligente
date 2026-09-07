@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Afiliado Inteligente - Login</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="supabase-config.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+            color: #111827;
+        }
+
+        .descricao {
+            margin-bottom: 25px;
+            color: #667085;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 7px;
+            font-weight: bold;
+            color: #344054;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d0d5dd;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .entrar {
+            background: #111827;
+            color: white;
+        }
+
+        .cadastrar {
+            background: #eef2f6;
+            color: #111827;
+        }
+
+        #mensagem {
+            display: none;
+            margin-top: 18px;
+            padding: 12px;
+            border-radius: 10px;
+            line-height: 1.4;
+        }
+
+        .sucesso {
+            display: block !important;
+            background: #ecfdf3;
+            color: #067647;
+        }
+
+        .erro {
+            display: block !important;
+            background: #fef3f2;
+            color: #b42318;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+
+        <h1>Afiliado Inteligente</h1>
+
+        <p class="descricao">
+            Entre na sua conta ou crie seu acesso gratuito.
+        </p>
+
+        <label for="nome">Nome</label>
+
+        <input
+            id="nome"
+            type="text"
+            placeholder="Seu nome"
+        >
+
+        <label for="email">E-mail</label>
+
+        <input
+            id="email"
+            type="email"
+            placeholder="seu@email.com"
+        >
+
+        <label for="senha">Senha</label>
+
+        <input
+            id="senha"
+            type="password"
+            placeholder="Mínimo de 6 caracteres"
+        >
+
+        <button
+            class="entrar"
+            onclick="entrar()"
+        >
+            Entrar
+        </button>
+
+        <button
+            class="cadastrar"
+            onclick="cadastrar()"
+        >
+            Criar minha conta
+        </button>
+
+        <div id="mensagem"></div>
+
+    </div>
+
+<script>
+
+function mensagem(texto, tipo) {
+
+    const elemento = document.getElementById("mensagem");
+
+    elemento.textContent = texto;
+
+    elemento.className = tipo;
+}
+
+
+async function entrar() {
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const senha =
+        document.getElementById("senha").value;
+
+    if (!email || !senha) {
+
+        mensagem(
+            "Informe e-mail e senha.",
+            "erro"
+        );
+
+        return;
+    }
+
+    mensagem(
+        "Entrando...",
+        "sucesso"
+    );
+
+    const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+
+            email: email,
+
+            password: senha
+
+        });
+
+    if (error) {
+
+        mensagem(
+            error.message,
+            "erro"
+        );
+
+        return;
+    }
+
+    mensagem(
+        "Login realizado com sucesso!",
+        "sucesso"
+    );
+
+    /*
+       Por enquanto vamos apenas confirmar
+       que o login funciona.
+
+       Depois vamos redirecionar para o Dashboard.
+    */
+
+    console.log(
+        "Usuário autenticado:",
+        data.user
+    );
+}
+
+
+async function cadastrar() {
+
+    const nome =
+        document.getElementById("nome").value.trim();
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const senha =
+        document.getElementById("senha").value;
+
+    if (!nome || !email || !senha) {
+
+        mensagem(
+            "Preencha nome, e-mail e senha.",
+            "erro"
+        );
+
+        return;
+    }
+
+    if (senha.length < 6) {
+
+        mensagem(
+            "A senha precisa ter pelo menos 6 caracteres.",
+            "erro"
+        );
+
+        return;
+    }
+
+    mensagem(
+        "Criando sua conta...",
+        "sucesso"
+    );
+
+    const { data, error } =
+        await supabaseClient.auth.signUp({
+
+            email: email,
+
+            password: senha,
+
+            options: {
+
+                data: {
+                    nome: nome
+                }
+
+            }
+
+        });
+
+    if (error) {
+
+        mensagem(
+            error.message,
+            "erro"
+        );
+
+        return;
+    }
+
+    if (data.session) {
+
+        mensagem(
+            "Conta criada e login realizado!",
+            "sucesso"
+        );
+
+    } else {
+
+        mensagem(
+            "Conta criada! Verifique seu e-mail para confirmar o cadastro.",
+            "sucesso"
+        );
+
+    }
+}
+
+</script>
+
+</body>
+</html>
