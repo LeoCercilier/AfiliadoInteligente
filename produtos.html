@@ -1,1050 +1,2850 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="Descubra produtos com potencial de divulgação - Afiliado Inteligente" />
-  <meta name="theme-color" content="#0f172a" />
-  <title>Descobrir Produtos | Afiliado Inteligente</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-config.js"></script>
-  <style>
-:root{--bg:#0b1220;--bg-elevated:#111827;--bg-card:#1a2332;--bg-hover:#243044;--border:#2a3548;--border-light:#374151;--text:#f1f5f9;--text-secondary:#94a3b8;--text-muted:#64748b;--primary:#22c55e;--primary-hover:#16a34a;--primary-soft:rgba(34,197,94,0.12);--accent:#3b82f6;--accent-soft:rgba(59,130,246,0.12);--warning:#f59e0b;--warning-soft:rgba(245,158,11,0.12);--danger:#ef4444;--danger-soft:rgba(239,68,68,0.12);--score-excellent:#22c55e;--score-great:#84cc16;--score-good:#eab308;--score-moderate:#f97316;--score-low:#94a3b8;--radius:12px;--radius-sm:8px;--shadow:0 4px 24px rgba(0,0,0,0.25);--shadow-lg:0 12px 40px rgba(0,0,0,0.4);--font:'Inter',system-ui,-apple-system,sans-serif;--header-h:64px;--safe-bottom:env(safe-area-inset-bottom,0px);}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.5;min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased;}a{color:inherit;text-decoration:none;}button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}input,select{font-family:inherit;}img{max-width:100%;display:block;}.header{position:sticky;top:0;z-index:100;background:rgba(11,18,32,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:var(--header-h);}.header-inner{max-width:1400px;margin:0 auto;padding:0 16px;height:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;}.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.05rem;white-space:nowrap;}.brand-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--primary),#10b981);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}.header-actions{display:flex;align-items:center;gap:10px;}.auth-badge{font-size:0.75rem;color:var(--text-muted);display:none;align-items:center;gap:6px;}.auth-badge.visible{display:flex;}.auth-dot{width:7px;height:7px;border-radius:50%;background:var(--primary);}.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 14px;border-radius:var(--radius-sm);font-size:0.875rem;font-weight:500;transition:background 0.15s,transform 0.1s,opacity 0.15s;white-space:nowrap;}.btn:active{transform:scale(0.97);}.btn:disabled{opacity:0.5;cursor:not-allowed;}.btn-ghost{background:transparent;color:var(--text-secondary);border:1px solid var(--border);}.btn-ghost:hover:not(:disabled){background:var(--bg-hover);color:var(--text);}.btn-primary{background:var(--primary);color:#052e16;font-weight:600;}.btn-primary:hover:not(:disabled){background:var(--primary-hover);}.btn-secondary{background:var(--bg-hover);color:var(--text);border:1px solid var(--border);}.btn-secondary:hover:not(:disabled){background:var(--border);}.btn-sm{padding:6px 10px;font-size:0.8rem;}.btn-lg{padding:12px 20px;font-size:0.95rem;}.btn-block{width:100%;}.btn-icon{width:36px;height:36px;padding:0;border-radius:var(--radius-sm);background:var(--bg-hover);border:1px solid var(--border);}.btn-icon:hover{background:var(--border);}.main{max-width:1400px;margin:0 auto;padding:20px 16px 80px;}.page-header{margin-bottom:24px;}.page-title{font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:4px;}.page-subtitle{color:var(--text-secondary);font-size:0.9rem;max-width:520px;}.stats-bar{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;}@media (min-width:640px){.stats-bar{grid-template-columns:repeat(4,1fr);}}.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;}.stat-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--text-muted);margin-bottom:4px;}.stat-value{font-size:1.25rem;font-weight:700;letter-spacing:-0.02em;}.stat-value.highlight{color:var(--primary);}.search-section{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:20px;}.search-row{display:flex;gap:10px;margin-bottom:12px;}.search-input-wrap{flex:1;position:relative;}.search-input{width:100%;padding:12px 14px 12px 42px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:0.95rem;outline:none;transition:border-color 0.15s;}.search-input:focus{border-color:var(--primary);}.search-input::placeholder{color:var(--text-muted);}.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none;font-size:1rem;}.filters-toggle{display:flex;align-items:center;gap:6px;padding:10px 14px;background:var(--bg-hover);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.875rem;color:var(--text-secondary);white-space:nowrap;}.filters-toggle:hover{color:var(--text);background:var(--border);}.filters-toggle.active{background:var(--primary-soft);border-color:var(--primary);color:var(--primary);}.filters-badge{background:var(--primary);color:#052e16;font-size:0.7rem;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;padding:0 5px;}.filters-panel{display:none;grid-template-columns:1fr;gap:12px;padding-top:12px;border-top:1px solid var(--border);margin-top:4px;}.filters-panel.open{display:grid;}@media (min-width:640px){.filters-panel.open{grid-template-columns:repeat(2,1fr);}}@media (min-width:900px){.filters-panel.open{grid-template-columns:repeat(3,1fr);}}@media (min-width:1100px){.filters-panel.open{grid-template-columns:repeat(4,1fr);}}.filter-group{display:flex;flex-direction:column;gap:4px;}.filter-label{font-size:0.75rem;font-weight:500;color:var(--text-secondary);}.filter-input,.filter-select{padding:9px 12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:0.875rem;outline:none;width:100%;}.filter-input:focus,.filter-select:focus{border-color:var(--primary);}.filter-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}.filter-checkboxes{display:flex;flex-wrap:wrap;gap:10px;padding-top:4px;}.filter-check{display:flex;align-items:center;gap:6px;font-size:0.8rem;color:var(--text-secondary);cursor:pointer;user-select:none;}.filter-check input{width:16px;height:16px;accent-color:var(--primary);cursor:pointer;}.filters-actions{display:flex;gap:8px;grid-column:1 / -1;padding-top:4px;}.toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;}.results-info{font-size:0.85rem;color:var(--text-secondary);}.results-info strong{color:var(--text);}.sort-wrap{display:flex;align-items:center;gap:8px;}.sort-label{font-size:0.8rem;color:var(--text-muted);white-space:nowrap;}.sort-select{padding:8px 32px 8px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:0.85rem;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;cursor:pointer;}.sort-select:focus{border-color:var(--primary);}.products-grid{display:grid;grid-template-columns:1fr;gap:14px;}@media (min-width:560px){.products-grid{grid-template-columns:repeat(2,1fr);}}@media (min-width:900px){.products-grid{grid-template-columns:repeat(3,1fr);}}@media (min-width:1200px){.products-grid{grid-template-columns:repeat(4,1fr);}}.product-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.15s,box-shadow 0.15s,transform 0.15s;position:relative;}.product-card:hover{border-color:var(--border-light);box-shadow:var(--shadow);}.card-image-wrap{position:relative;aspect-ratio:1;background:var(--bg);overflow:hidden;}.card-image{width:100%;height:100%;object-fit:cover;transition:transform 0.3s;}.product-card:hover .card-image{transform:scale(1.03);}.card-image.placeholder{display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:2rem;background:var(--bg-elevated);}.card-badges{position:absolute;top:8px;left:8px;display:flex;flex-direction:column;gap:4px;z-index:2;}.badge{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:6px;font-size:0.7rem;font-weight:600;line-height:1.3;backdrop-filter:blur(8px);}.badge-ams{background:rgba(59,130,246,0.9);color:#fff;}.badge-key{background:rgba(245,158,11,0.9);color:#fff;}.badge-discount{background:rgba(239,68,68,0.9);color:#fff;}.score-badge{position:absolute;top:8px;right:8px;z-index:2;padding:4px 8px;border-radius:8px;font-size:0.75rem;font-weight:700;backdrop-filter:blur(8px);display:flex;align-items:center;gap:3px;}.score-excellent{background:rgba(34,197,94,0.92);color:#052e16;}.score-great{background:rgba(132,204,22,0.92);color:#14532d;}.score-good{background:rgba(234,179,8,0.92);color:#422006;}.score-moderate{background:rgba(249,115,22,0.92);color:#fff;}.score-low{background:rgba(100,116,139,0.9);color:#fff;}.card-body{padding:12px 14px 14px;display:flex;flex-direction:column;flex:1;gap:8px;}.card-name{font-size:0.875rem;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.4em;cursor:pointer;}.card-name:hover{color:var(--primary);}.card-shop{font-size:0.75rem;color:var(--text-muted);display:flex;align-items:center;gap:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.card-meta{display:flex;flex-wrap:wrap;gap:8px 12px;font-size:0.75rem;color:var(--text-secondary);}.card-meta span{display:inline-flex;align-items:center;gap:3px;}.card-price-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;}.card-price{font-size:1.15rem;font-weight:700;color:var(--primary);letter-spacing:-0.02em;}.card-price-old{font-size:0.8rem;color:var(--text-muted);text-decoration:line-through;}.card-commission{background:var(--primary-soft);border-radius:var(--radius-sm);padding:8px 10px;font-size:0.8rem;display:flex;flex-direction:column;gap:2px;}.card-commission strong{color:var(--primary);font-weight:600;}.card-commission-rate{color:var(--text-secondary);font-size:0.75rem;}.score-explanation{font-size:0.72rem;color:var(--text-muted);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}.card-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:auto;padding-top:4px;}.card-actions .btn{font-size:0.75rem;padding:8px 6px;}.card-actions-full{grid-column:1 / -1;}.skeleton-grid{display:grid;grid-template-columns:1fr;gap:14px;}@media (min-width:560px){.skeleton-grid{grid-template-columns:repeat(2,1fr);}}@media (min-width:900px){.skeleton-grid{grid-template-columns:repeat(3,1fr);}}@media (min-width:1200px){.skeleton-grid{grid-template-columns:repeat(4,1fr);}}.skeleton-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}.skeleton-img{aspect-ratio:1;background:linear-gradient(90deg,var(--bg-elevated) 25%,var(--bg-hover) 50%,var(--bg-elevated) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;}.skeleton-body{padding:14px;display:flex;flex-direction:column;gap:10px;}.skeleton-line{height:12px;border-radius:4px;background:linear-gradient(90deg,var(--bg-elevated) 25%,var(--bg-hover) 50%,var(--bg-elevated) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;}.skeleton-line.w80{width:80%;}.skeleton-line.w60{width:60%;}.skeleton-line.w40{width:40%;}.skeleton-line.h20{height:20px;}@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}.state-box{text-align:center;padding:48px 20px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);}.state-icon{font-size:2.5rem;margin-bottom:12px;opacity:0.7;}.state-title{font-size:1.1rem;font-weight:600;margin-bottom:6px;}.state-desc{color:var(--text-secondary);font-size:0.9rem;max-width:360px;margin:0 auto 16px;}.pagination{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:28px;flex-wrap:wrap;}.page-indicator{font-size:0.85rem;color:var(--text-secondary);min-width:100px;text-align:center;}.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;transition:opacity 0.2s,visibility 0.2s;}.modal-overlay.open{opacity:1;visibility:visible;}@media (min-width:640px){.modal-overlay{align-items:center;padding:20px;}}.modal{background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius) var(--radius) 0 0;width:100%;max-width:560px;max-height:92vh;max-height:92dvh;overflow-y:auto;transform:translateY(100%);transition:transform 0.25s ease;-webkit-overflow-scrolling:touch;}.modal-overlay.open .modal{transform:translateY(0);}@media (min-width:640px){.modal{border-radius:var(--radius);transform:translateY(20px) scale(0.98);}.modal-overlay.open .modal{transform:translateY(0) scale(1);}}.modal-header{position:sticky;top:0;background:var(--bg-elevated);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;z-index:5;}.modal-title{font-size:1rem;font-weight:600;}.modal-close{width:36px;height:36px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:1.25rem;color:var(--text-secondary);background:var(--bg-hover);}.modal-close:hover{color:var(--text);}.modal-body{padding:16px;}.modal-image{width:100%;aspect-ratio:1;object-fit:cover;border-radius:var(--radius);background:var(--bg);margin-bottom:16px;}.modal-name{font-size:1.15rem;font-weight:700;line-height:1.35;margin-bottom:8px;}.modal-score-block{display:flex;align-items:flex-start;gap:12px;padding:12px;background:var(--bg-card);border-radius:var(--radius-sm);margin-bottom:16px;border:1px solid var(--border);}.modal-score-num{font-size:1.5rem;font-weight:800;line-height:1;white-space:nowrap;}.modal-score-label{font-size:0.85rem;font-weight:600;margin-bottom:2px;}.modal-score-exp{font-size:0.8rem;color:var(--text-secondary);line-height:1.4;}.modal-section{margin-bottom:16px;}.modal-section-title{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--text-muted);margin-bottom:8px;font-weight:600;}.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}.modal-field{background:var(--bg-card);border-radius:var(--radius-sm);padding:10px 12px;border:1px solid var(--border);}.modal-field-label{font-size:0.7rem;color:var(--text-muted);margin-bottom:2px;}.modal-field-value{font-size:0.9rem;font-weight:600;}.modal-why{background:var(--primary-soft);border:1px solid rgba(34,197,94,0.25);border-radius:var(--radius);padding:14px;margin-bottom:16px;}.modal-why-title{font-size:0.85rem;font-weight:600;color:var(--primary);margin-bottom:8px;display:flex;align-items:center;gap:6px;}.modal-why-list{list-style:none;display:flex;flex-direction:column;gap:6px;}.modal-why-list li{font-size:0.85rem;color:var(--text-secondary);display:flex;align-items:flex-start;gap:8px;}.modal-why-list li::before{content:"✓";color:var(--primary);font-weight:700;flex-shrink:0;}.modal-actions{display:flex;flex-direction:column;gap:8px;padding-top:8px;position:sticky;bottom:0;background:var(--bg-elevated);padding-bottom:calc(12px+var(--safe-bottom));border-top:1px solid var(--border);margin:0 -16px -16px;padding-left:16px;padding-right:16px;padding-top:12px;}@media (min-width:480px){.modal-actions{flex-direction:row;flex-wrap:wrap;}.modal-actions .btn{flex:1;min-width:140px;}}.toast-container{position:fixed;bottom:calc(20px+var(--safe-bottom));left:50%;transform:translateX(-50%);z-index:300;display:flex;flex-direction:column;gap:8px;pointer-events:none;width:calc(100% - 32px);max-width:400px;}.toast{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;font-size:0.875rem;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;pointer-events:auto;animation:toastIn 0.25s ease;}.toast.success{border-color:rgba(34,197,94,0.4);}.toast.error{border-color:rgba(239,68,68,0.4);}.toast.info{border-color:rgba(59,130,246,0.4);}@keyframes toastIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}.loading-bar{position:fixed;top:0;left:0;height:3px;background:var(--primary);z-index:150;width:0;transition:width 0.3s;display:none;}.loading-bar.active{display:block;animation:loadingProgress 1.8s ease-in-out infinite;}@keyframes loadingProgress{0%{width:0;left:0;}50%{width:70%;left:15%;}100%{width:0;left:100%;}}.hidden{display:none !important;}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;}@media (min-width:1100px){.main-layout{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start;}.filters-sidebar{display:block;position:sticky;top:calc(var(--header-h)+16px);}.filters-sidebar .search-section{margin-bottom:0;}.filters-sidebar .filters-panel{display:grid !important;grid-template-columns:1fr;border-top:none;padding-top:0;margin-top:0;}.filters-sidebar .filters-toggle,.mobile-only-filters{display:none !important;}.search-section .search-row{margin-bottom:0;}.search-section .filters-panel{display:none;}}@media (max-width:1099px){.filters-sidebar{display:none;}}
-  </style>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Afiliado Inteligente - Descubra produtos com potencial para divulgação."
+    >
+
+    <title>Descobrir Produtos - Afiliado Inteligente</title>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family:
+                Inter,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+            background: #07111f;
+            color: #e5e7eb;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .app {
+            min-height: 100vh;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(7, 17, 31, 0.96);
+            border-bottom: 1px solid #1e293b;
+            backdrop-filter: blur(10px);
+        }
+
+        .topbar-inner {
+            max-width: 1180px;
+            margin: 0 auto;
+            min-height: 70px;
+            padding: 12px 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #2563eb;
+            font-size: 21px;
+            flex-shrink: 0;
+        }
+
+        .brand-text {
+            min-width: 0;
+        }
+
+        .brand-title {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 800;
+            color: #f8fafc;
+        }
+
+        .brand-subtitle {
+            margin-top: 2px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .back-button {
+            border: 1px solid #334155;
+            background: #111827;
+            color: #cbd5e1;
+            padding: 9px 13px;
+            border-radius: 9px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .back-button:hover {
+            background: #1e293b;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .container {
+            width: 100%;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 24px 18px 50px;
+        }
+
+        .page-heading {
+            margin-bottom: 20px;
+        }
+
+        .page-heading h1 {
+            margin: 0;
+            font-size: clamp(25px, 5vw, 34px);
+            line-height: 1.15;
+            color: #f8fafc;
+        }
+
+        .page-heading p {
+            margin: 8px 0 0;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .stat-card {
+            background: #111827;
+            border: 1px solid #1e293b;
+            border-radius: 14px;
+            padding: 17px;
+            min-width: 0;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .stat-value {
+            color: #f8fafc;
+            font-size: 24px;
+            font-weight: 800;
+            line-height: 1.2;
+            overflow-wrap: anywhere;
+        }
+
+        /* =========================
+           SEARCH / FILTERS
+        ========================= */
+
+        .filter-card {
+            background: #111827;
+            border: 1px solid #1e293b;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 18px;
+        }
+
+        .filter-title {
+            margin: 0 0 13px;
+            font-size: 16px;
+            color: #f8fafc;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns:
+                minmax(220px, 2fr)
+                minmax(140px, 1fr)
+                minmax(140px, 1fr)
+                minmax(170px, 1fr);
+            gap: 10px;
+        }
+
+        .field {
+            min-width: 0;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            height: 43px;
+            padding: 0 12px;
+            border-radius: 9px;
+            border: 1px solid #334155;
+            outline: none;
+            background: #0b1220;
+            color: #e5e7eb;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: #3b82f6;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .btn {
+            min-height: 43px;
+            border-radius: 9px;
+            border: 1px solid transparent;
+            padding: 0 15px;
+            color: white;
+            font-weight: 700;
+            transition: 0.15s ease;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #1e293b;
+            border-color: #334155;
+            color: #cbd5e1;
+        }
+
+        .btn-secondary:hover {
+            background: #334155;
+        }
+
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .status-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 12px 0;
+            color: #94a3b8;
+            font-size: 14px;
+            flex-wrap: wrap;
+        }
+
+        .status-message {
+            min-height: 20px;
+        }
+
+        .loading {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #334155;
+            border-top-color: #60a5fa;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* =========================
+           PRODUCTS
+        ========================= */
+
+        .products-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fill, minmax(255px, 1fr));
+            gap: 15px;
+        }
+
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            overflow: hidden;
+            background: #111827;
+            border: 1px solid #1e293b;
+            border-radius: 14px;
+            transition:
+                transform 0.15s ease,
+                border-color 0.15s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-2px);
+            border-color: #334155;
+        }
+
+        .product-image-wrap {
+            position: relative;
+            width: 100%;
+            height: 225px;
+            background: white;
+            overflow: hidden;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .product-image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            background: #f8fafc;
+            font-size: 48px;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 5px 8px;
+            border-radius: 7px;
+            background: #dc2626;
+            color: white;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .product-content {
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .product-name {
+            color: #f8fafc;
+            font-size: 15px;
+            font-weight: 750;
+            line-height: 1.4;
+            min-height: 42px;
+            margin-bottom: 6px;
+        }
+
+        .product-store {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product-price {
+            font-size: 22px;
+            font-weight: 850;
+            color: #f8fafc;
+            margin: 4px 0 10px;
+        }
+
+        .product-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7px;
+            margin-bottom: 11px;
+        }
+
+        .meta-item {
+            background: #0b1220;
+            border-radius: 8px;
+            padding: 7px 8px;
+            font-size: 12px;
+            color: #cbd5e1;
+            min-width: 0;
+        }
+
+        .meta-item strong {
+            color: #f8fafc;
+        }
+
+        .commission-box {
+            padding: 10px;
+            border-radius: 9px;
+            background: #0f2a20;
+            border: 1px solid #14532d;
+            margin-top: auto;
+        }
+
+        .commission-label {
+            color: #86efac;
+            font-size: 11px;
+            margin-bottom: 3px;
+        }
+
+        .commission-value {
+            color: #bbf7d0;
+            font-weight: 800;
+            font-size: 16px;
+        }
+
+        .card-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 11px;
+        }
+
+        .card-button {
+            min-height: 40px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background: #1e293b;
+            color: #e5e7eb;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .card-button.primary {
+            background: #2563eb;
+            border-color: #2563eb;
+            color: white;
+        }
+
+        /* =========================
+           EMPTY / ERROR
+        ========================= */
+
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 45px 18px;
+            border: 1px dashed #334155;
+            border-radius: 14px;
+            background: #0f172a;
+            color: #94a3b8;
+        }
+
+        .empty-icon {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .empty-title {
+            color: #e5e7eb;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        /* =========================
+           PAGINATION
+        ========================= */
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 850px) {
+            .filters-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar-inner {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .container {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .brand-subtitle {
+                display: none;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-actions {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .back-button {
+                font-size: 12px;
+                padding: 8px 9px;
+            }
+
+            .brand-title {
+                font-size: 15px;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-image-wrap {
+                height: 245px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <div class="loading-bar" id="loadingBar"></div>
+<div class="app">
 
-  <header class="header">
-    <div class="header-inner">
-      <a href="dashboard.html" class="brand" title="Voltar ao Dashboard">
-        <span class="brand-icon">AI</span>
-        <span>Afiliado Inteligente</span>
-      </a>
-      <div class="header-actions">
-        <span class="auth-badge" id="authBadge">
-          <span class="auth-dot"></span>
-          <span id="authLabel">Conectado</span>
-        </span>
-        <a href="dashboard.html" class="btn btn-ghost btn-sm">← Dashboard</a>
-      </div>
-    </div>
-  </header>
+    <header class="topbar">
+        <div class="topbar-inner">
 
-  <main class="main">
-    <div class="page-header">
-      <h1 class="page-title">Descobrir Produtos</h1>
-      <p class="page-subtitle">Encontre produtos com potencial real de divulgação. Use filtros e o score inteligente para priorizar o que vale a pena promover.</p>
-    </div>
+            <div class="brand">
+                <div class="brand-icon">🤖</div>
 
-    <div class="stats-bar" id="statsBar">
-      <div class="stat-card">
-        <div class="stat-label">Produtos encontrados</div>
-        <div class="stat-value" id="statTotal">—</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Melhor Score</div>
-        <div class="stat-value highlight" id="statBestScore">—</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Maior comissão</div>
-        <div class="stat-value" id="statBestCommission">—</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Mais vendido</div>
-        <div class="stat-value" id="statBestSales">—</div>
-      </div>
-    </div>
+                <div class="brand-text">
+                    <div class="brand-title">
+                        Afiliado Inteligente
+                    </div>
 
-    <div class="main-layout">
-      <aside class="filters-sidebar" id="filtersSidebar">
-        <div class="search-section">
-          <div class="filter-group" style="margin-bottom:12px">
-            <label class="filter-label" for="keywordSidebar">Busca</label>
-            <div class="search-input-wrap">
-              <span class="search-icon">🔍</span>
-              <input type="text" id="keywordSidebar" class="search-input" placeholder="Digite o nome do produto..." autocomplete="off" />
+                    <div class="brand-subtitle">
+                        Descoberta inteligente de produtos
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="filters-panel open" id="filtersPanelDesktop"></div>
-        </div>
-      </aside>
 
-      <div class="content-area">
-        <div class="search-section" id="searchSection">
-          <div class="search-row">
-            <div class="search-input-wrap">
-              <span class="search-icon">🔍</span>
-              <input type="text" id="keywordInput" class="search-input" placeholder="Digite o nome do produto..." autocomplete="off" />
+            <a
+                href="dashboard.html"
+                class="back-button"
+            >
+                ← Dashboard
+            </a>
+
+        </div>
+    </header>
+
+
+    <main class="container">
+
+        <section class="page-heading">
+            <h1>🔎 Descobrir Produtos</h1>
+
+            <p>
+                Encontre produtos com potencial real de divulgação.
+                Use os filtros e priorize oportunidades.
+            </p>
+        </section>
+
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-label">
+                    Produtos encontrados
+                </div>
+
+                <div
+                    class="stat-value"
+                    id="totalProdutos"
+                >
+                    —
+                </div>
             </div>
-            <button type="button" class="btn btn-primary" id="btnBuscar">Buscar</button>
-            <button type="button" class="btn btn-ghost" id="btnLimpar" title="Limpar busca e filtros">Limpar</button>
-            <button type="button" class="filters-toggle mobile-only-filters" id="btnFiltros" aria-expanded="false">
-              Filtros <span class="filters-badge hidden" id="filtersBadge">0</span>
-            </button>
-          </div>
-          <div class="filters-panel" id="filtersPanelMobile"></div>
+
+
+            <div class="stat-card">
+                <div class="stat-label">
+                    Melhor Score
+                </div>
+
+                <div
+                    class="stat-value"
+                    id="melhorScore"
+                >
+                    —
+                </div>
+            </div>
+
+
+            <div class="stat-card">
+                <div class="stat-label">
+                    Maior comissão
+                </div>
+
+                <div
+                    class="stat-value"
+                    id="maiorComissao"
+                >
+                    —
+                </div>
+            </div>
+
+        </section>
+
+
+        <section class="filter-card">
+
+            <h2 class="filter-title">
+                🎯 Filtros
+            </h2>
+
+            <div class="filters-grid">
+
+                <div class="field">
+                    <label for="keyword">
+                        Produto ou loja
+                    </label>
+
+                    <input
+                        type="search"
+                        id="keyword"
+                        placeholder="Ex.: celular, fone, cozinha..."
+                        autocomplete="off"
+                    >
+                </div>
+
+
+                <div class="field">
+                    <label for="precoMin">
+                        Preço mínimo
+                    </label>
+
+                    <input
+                        type="number"
+                        id="precoMin"
+                        min="0"
+                        step="0.01"
+                        placeholder="R$ 0"
+                    >
+                </div>
+
+
+                <div class="field">
+                    <label for="precoMax">
+                        Preço máximo
+                    </label>
+
+                    <input
+                        type="number"
+                        id="precoMax"
+                        min="0"
+                        step="0.01"
+                        placeholder="R$ 9999"
+                    >
+                </div>
+
+
+                <div class="field">
+                    <label for="ordenacao">
+                        Ordenar por
+                    </label>
+
+                    <select id="ordenacao">
+                        <option value="score">
+                            Melhor Score
+                        </option>
+
+                        <option value="comissao">
+                            Maior comissão
+                        </option>
+
+                        <option value="vendas">
+                            Mais vendido
+                        </option>
+
+                        <option value="avaliacao">
+                            Melhor avaliação
+                        </option>
+
+                        <option value="precoMenor">
+                            Menor preço
+                        </option>
+
+                        <option value="precoMaior">
+                            Maior preço
+                        </option>
+                    </select>
+                </div>
+
+
+                <div class="field">
+                    <label for="comissaoMin">
+                        Comissão mínima (%)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="comissaoMin"
+                        min="0"
+                        step="0.1"
+                        placeholder="Ex.: 5"
+                    >
+                </div>
+
+
+                <div class="field">
+                    <label for="avaliacaoMin">
+                        Avaliação mínima
+                    </label>
+
+                    <select id="avaliacaoMin">
+                        <option value="">
+                            Qualquer avaliação
+                        </option>
+
+                        <option value="4">
+                            ⭐ 4,0+
+                        </option>
+
+                        <option value="4.5">
+                            ⭐ 4,5+
+                        </option>
+
+                        <option value="4.8">
+                            ⭐ 4,8+
+                        </option>
+                    </select>
+                </div>
+
+
+                <div class="field">
+                    <label for="vendasMin">
+                        Vendas mínimas
+                    </label>
+
+                    <input
+                        type="number"
+                        id="vendasMin"
+                        min="0"
+                        step="1"
+                        placeholder="Ex.: 10"
+                    >
+                </div>
+
+
+                <div class="field">
+                    <label for="loja">
+                        Loja
+                    </label>
+
+                    <input
+                        type="text"
+                        id="loja"
+                        placeholder="Nome da loja"
+                        autocomplete="off"
+                    >
+                </div>
+
+            </div>
+
+
+            <div class="filter-actions">
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="btnBuscar"
+                >
+                    🔎 Buscar produtos
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="btnLimpar"
+                >
+                    🧹 Limpar filtros
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <div class="status-area">
+
+            <div
+                id="status"
+                class="status-message"
+            >
+                Preparando busca...
+            </div>
+
+            <div
+                id="paginaInfo"
+                class="status-message"
+            ></div>
+
         </div>
 
-        <div class="toolbar">
-          <div class="results-info" id="resultsInfo">Faça uma busca para descobrir produtos</div>
-          <div class="sort-wrap">
-            <label class="sort-label" for="sortSelect">Ordenar</label>
-            <select id="sortSelect" class="sort-select">
-              <option value="score">Melhor oportunidade</option>
-              <option value="sales">Mais vendidos</option>
-              <option value="commission">Maior comissão</option>
-              <option value="discount">Maior desconto</option>
-              <option value="rating">Melhor avaliação</option>
-              <option value="price_asc">Menor preço</option>
-              <option value="price_desc">Maior preço</option>
-            </select>
-          </div>
+
+        <section
+            id="listaProdutos"
+            class="products-grid"
+        ></section>
+
+
+        <section
+            id="emptyState"
+            class="empty-state"
+        >
+            <div class="empty-icon">
+                📦
+            </div>
+
+            <div class="empty-title">
+                Nenhum produto encontrado
+            </div>
+
+            <div>
+                Tente alterar os filtros ou realizar uma nova busca.
+            </div>
+        </section>
+
+
+        <div
+            id="paginacao"
+            class="pagination"
+        ></div>
+
+    </main>
+
+</div>
+
+
+<script>
+/* ============================================================
+   ESTADO DA APLICAÇÃO
+============================================================ */
+
+const estado = {
+    produtos: [],
+    produtosFiltrados: [],
+
+    pagina: 1,
+    limite: 20,
+
+    hasNextPage: false,
+    totalCarregados: 0,
+
+    keyword: "",
+    ordenacao: "score",
+
+    filtros: {
+        precoMin: null,
+        precoMax: null,
+        comissaoMin: null,
+        avaliacaoMin: null,
+        vendasMin: null,
+        loja: ""
+    },
+
+    carregando: false,
+    ultimaBusca: null,
+
+    produtoSelecionado: null,
+    session: null,
+
+    abortController: null
+};
+
+
+/* ============================================================
+   ELEMENTOS
+============================================================ */
+
+const elementos = {
+    keyword: document.getElementById("keyword"),
+    precoMin: document.getElementById("precoMin"),
+    precoMax: document.getElementById("precoMax"),
+    comissaoMin: document.getElementById("comissaoMin"),
+    avaliacaoMin: document.getElementById("avaliacaoMin"),
+    vendasMin: document.getElementById("vendasMin"),
+    loja: document.getElementById("loja"),
+    ordenacao: document.getElementById("ordenacao"),
+
+    btnBuscar: document.getElementById("btnBuscar"),
+    btnLimpar: document.getElementById("btnLimpar"),
+
+    status: document.getElementById("status"),
+    paginaInfo: document.getElementById("paginaInfo"),
+
+    totalProdutos: document.getElementById("totalProdutos"),
+    melhorScore: document.getElementById("melhorScore"),
+    maiorComissao: document.getElementById("maiorComissao"),
+
+    listaProdutos: document.getElementById("listaProdutos"),
+    emptyState: document.getElementById("emptyState"),
+    paginacao: document.getElementById("paginacao")
+};
+
+
+/* ============================================================
+   UTILITÁRIOS
+============================================================ */
+
+function numero(valor) {
+    if (
+        valor === null ||
+        valor === undefined ||
+        valor === ""
+    ) {
+        return null;
+    }
+
+    const numeroConvertido = Number(valor);
+
+    return Number.isFinite(numeroConvertido)
+        ? numeroConvertido
+        : null;
+}
+
+
+function moeda(valor) {
+    const n = numero(valor);
+
+    if (n === null) {
+        return "—";
+    }
+
+    return n.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+}
+
+
+function formatarNumero(valor) {
+    const n = numero(valor);
+
+    if (n === null) {
+        return "—";
+    }
+
+    return n.toLocaleString("pt-BR");
+}
+
+
+function percentual(valor) {
+    const n = numero(valor);
+
+    if (n === null) {
+        return "—";
+    }
+
+    /*
+       A API pode devolver 0.03 ou 3.
+       Normalizamos os dois formatos para exibição.
+    */
+
+    const percentualFinal = n <= 1
+        ? n * 100
+        : n;
+
+    return percentualFinal
+        .toLocaleString("pt-BR", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+        }) + "%";
+}
+
+
+function escaparHtml(valor) {
+    return String(valor ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+function escaparAtributo(valor) {
+    return String(valor ?? "")
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'");
+}
+
+
+function converterTimestampShopee(valor) {
+    const n = Number(valor);
+
+    if (!Number.isFinite(n) || n <= 0) {
+        return null;
+    }
+
+    /*
+       Os timestamps da API da Shopee são Unix timestamp
+       em segundos.
+    */
+
+    return new Date(n * 1000).toISOString();
+}
+
+
+/* ============================================================
+   NORMALIZAÇÃO DOS PRODUTOS
+   ============================================================
+
+   Esta é a correção principal.
+
+   A Edge Function retorna campos como:
+
+   productName
+   priceMin
+   sales
+   ratingStar
+   commissionRate
+
+   enquanto a interface trabalha com:
+
+   nome
+   preco
+   vendas
+   avaliacao
+   taxa_comissao
+
+   Esta função permite trabalhar com os dois formatos.
+============================================================ */
+
+function normalizarProduto(produto) {
+
+    if (
+        !produto ||
+        typeof produto !== "object"
+    ) {
+        return produto;
+    }
+
+    return {
+        ...produto,
+
+        /* Identificação */
+        item_id:
+            produto.item_id ??
+            produto.itemId ??
+            null,
+
+        /* Produto */
+        nome:
+            produto.nome ??
+            produto.productName ??
+            "",
+
+        nome_loja:
+            produto.nome_loja ??
+            produto.shopName ??
+            "",
+
+        /* Imagem e links */
+        imagem_url:
+            produto.imagem_url ??
+            produto.imageUrl ??
+            "",
+
+        produto_link:
+            produto.produto_link ??
+            produto.productLink ??
+            null,
+
+        offer_link:
+            produto.offer_link ??
+            produto.offerLink ??
+            null,
+
+        /* Preços */
+        preco:
+            produto.preco ??
+            produto.priceMin ??
+            null,
+
+        preco_min:
+            produto.preco_min ??
+            produto.priceMin ??
+            null,
+
+        preco_max:
+            produto.preco_max ??
+            produto.priceMax ??
+            null,
+
+        /* Desconto */
+        desconto_percentual:
+            produto.desconto_percentual ??
+            produto.priceDiscountRate ??
+            null,
+
+        /* Vendas / avaliação */
+        vendas:
+            produto.vendas ??
+            produto.sales ??
+            null,
+
+        avaliacao:
+            produto.avaliacao ??
+            produto.ratingStar ??
+            null,
+
+        /* Comissão */
+        taxa_comissao:
+            produto.taxa_comissao ??
+            produto.commissionRate ??
+            null,
+
+        comissao:
+            produto.comissao ??
+            produto.commission ??
+            null,
+
+        seller_commission_rate:
+            produto.seller_commission_rate ??
+            produto.sellerCommissionRate ??
+            null,
+
+        shopee_commission_rate:
+            produto.shopee_commission_rate ??
+            produto.shopeeCommissionRate ??
+            null,
+
+        /* Loja */
+        shop_id:
+            produto.shop_id ??
+            produto.shopId ??
+            null,
+
+        shop_type:
+            produto.shop_type ??
+            (
+                produto.shopType !== null &&
+                produto.shopType !== undefined
+                    ? String(produto.shopType)
+                    : null
+            ),
+
+        /* Indicadores */
+        is_ams_offer:
+            produto.is_ams_offer ??
+            produto.isAMSOffer ??
+            false,
+
+        is_key_seller:
+            produto.is_key_seller ??
+            produto.isKeySeller ??
+            false,
+
+        /* Período */
+        periodo_inicio:
+            produto.periodo_inicio ??
+            converterTimestampShopee(
+                produto.periodStartTime
+            ),
+
+        periodo_fim:
+            produto.periodo_fim ??
+            converterTimestampShopee(
+                produto.periodEndTime
+            ),
+
+        /* Mantém resposta original */
+        dados_api:
+            produto.dados_api ??
+            produto
+    };
+}
+
+
+/* ============================================================
+   LISTA NORMALIZADA
+============================================================ */
+
+function normalizarLista(lista) {
+
+    if (!Array.isArray(lista)) {
+        return [];
+    }
+
+    return lista.map(normalizarProduto);
+}
+
+
+/* ============================================================
+   TAXA DE COMISSÃO
+============================================================ */
+
+function obterTaxaComissao(produto) {
+
+    const taxa = numero(
+        produto?.taxa_comissao ??
+        produto?.commissionRate
+    );
+
+    if (taxa === null) {
+        return null;
+    }
+
+    /*
+       Se vier 3, significa 3%.
+       Se vier 0.03, significa 3%.
+    */
+
+    return taxa > 1
+        ? taxa / 100
+        : taxa;
+}
+
+
+/* ============================================================
+   COMISSÃO ESTIMADA
+============================================================ */
+
+function obterComissaoEstimada(produto) {
+
+    const comissaoInformada = numero(
+        produto?.comissao ??
+        produto?.commission
+    );
+
+    /*
+       Se a API fornecer uma comissão monetária válida,
+       utilizamos esse valor.
+    */
+
+    if (
+        comissaoInformada !== null &&
+        comissaoInformada > 0
+    ) {
+        return comissaoInformada;
+    }
+
+    const preco = numero(
+        produto?.preco ??
+        produto?.priceMin ??
+        produto?.preco_min
+    );
+
+    const taxa = obterTaxaComissao(produto);
+
+    if (
+        preco === null ||
+        taxa === null
+    ) {
+        return null;
+    }
+
+    return preco * taxa;
+}
+
+
+/* ============================================================
+   SCORE
+============================================================ */
+
+function obterScore(produto) {
+
+    const score = numero(produto?.score);
+
+    if (score !== null) {
+        return score;
+    }
+
+    const produtoScores = numero(
+        produto?.produto_scores
+    );
+
+    if (produtoScores !== null) {
+        return produtoScores;
+    }
+
+    /*
+       Produtos que ainda não possuem score salvo
+       continuam disponíveis. O score será mostrado como —
+       até que o sistema tenha um score calculado.
+    */
+
+    return null;
+}
+
+
+/* ============================================================
+   STATUS
+============================================================ */
+
+function definirStatus(texto, carregando = false) {
+
+    if (carregando) {
+
+        elementos.status.innerHTML = `
+            <span class="loading">
+                <span class="spinner"></span>
+                ${escaparHtml(texto)}
+            </span>
+        `;
+
+        return;
+    }
+
+    elementos.status.textContent = texto || "";
+}
+
+
+/* ============================================================
+   ATUALIZAÇÃO DOS FILTROS
+============================================================ */
+
+function atualizarEstadoDosFiltros() {
+
+    estado.keyword =
+        elementos.keyword.value.trim();
+
+    estado.ordenacao =
+        elementos.ordenacao.value;
+
+    estado.filtros.precoMin =
+        numero(elementos.precoMin.value);
+
+    estado.filtros.precoMax =
+        numero(elementos.precoMax.value);
+
+    estado.filtros.comissaoMin =
+        numero(elementos.comissaoMin.value);
+
+    estado.filtros.avaliacaoMin =
+        numero(elementos.avaliacaoMin.value);
+
+    estado.filtros.vendasMin =
+        numero(elementos.vendasMin.value);
+
+    estado.filtros.loja =
+        elementos.loja.value
+            .trim()
+            .toLowerCase();
+}
+
+
+/* ============================================================
+   APLICAÇÃO DOS FILTROS
+============================================================ */
+
+function aplicarFiltrosLocais() {
+
+    atualizarEstadoDosFiltros();
+
+    const {
+        precoMin,
+        precoMax,
+        comissaoMin,
+        avaliacaoMin,
+        vendasMin,
+        loja
+    } = estado.filtros;
+
+    const termo =
+        estado.keyword.toLowerCase();
+
+    let lista =
+        estado.produtos.filter(produto => {
+
+            const nome =
+                String(produto.nome || "")
+                    .toLowerCase();
+
+            const nomeLoja =
+                String(produto.nome_loja || "")
+                    .toLowerCase();
+
+            /* Palavra-chave */
+            if (
+                termo &&
+                !nome.includes(termo) &&
+                !nomeLoja.includes(termo)
+            ) {
+                return false;
+            }
+
+            /* Preço */
+            const preco = numero(
+                produto.preco ??
+                produto.preco_min
+            );
+
+            if (
+                precoMin !== null &&
+                preco !== null &&
+                preco < precoMin
+            ) {
+                return false;
+            }
+
+            if (
+                precoMax !== null &&
+                preco !== null &&
+                preco > precoMax
+            ) {
+                return false;
+            }
+
+            /* Comissão */
+            const taxa =
+                obterTaxaComissao(produto);
+
+            if (
+                comissaoMin !== null &&
+                taxa !== null &&
+                taxa * 100 < comissaoMin
+            ) {
+                return false;
+            }
+
+            /* Avaliação */
+            const avaliacao =
+                numero(produto.avaliacao);
+
+            if (
+                avaliacaoMin !== null &&
+                (
+                    avaliacao === null ||
+                    avaliacao < avaliacaoMin
+                )
+            ) {
+                return false;
+            }
+
+            /* Vendas */
+            const vendas =
+                numero(produto.vendas);
+
+            if (
+                vendasMin !== null &&
+                (
+                    vendas === null ||
+                    vendas < vendasMin
+                )
+            ) {
+                return false;
+            }
+
+            /* Loja */
+            if (
+                loja &&
+                !nomeLoja.includes(loja)
+            ) {
+                return false;
+            }
+
+            return true;
+        });
+
+
+    /* ========================================================
+       ORDENAÇÃO
+    ======================================================== */
+
+    lista.sort((a, b) => {
+
+        if (estado.ordenacao === "comissao") {
+
+            return (
+                obterComissaoEstimada(b) || 0
+            ) - (
+                obterComissaoEstimada(a) || 0
+            );
+        }
+
+
+        if (estado.ordenacao === "vendas") {
+
+            return (
+                numero(b.vendas) || 0
+            ) - (
+                numero(a.vendas) || 0
+            );
+        }
+
+
+        if (estado.ordenacao === "avaliacao") {
+
+            return (
+                numero(b.avaliacao) || 0
+            ) - (
+                numero(a.avaliacao) || 0
+            );
+        }
+
+
+        if (estado.ordenacao === "precoMenor") {
+
+            return (
+                numero(a.preco ?? a.preco_min)
+                ?? Infinity
+            ) - (
+                numero(b.preco ?? b.preco_min)
+                ?? Infinity
+            );
+        }
+
+
+        if (estado.ordenacao === "precoMaior") {
+
+            return (
+                numero(b.preco ?? b.preco_min)
+                ?? 0
+            ) - (
+                numero(a.preco ?? a.preco_min)
+                ?? 0
+            );
+        }
+
+
+        /* Melhor score */
+        return (
+            obterScore(b) || 0
+        ) - (
+            obterScore(a) || 0
+        );
+    });
+
+
+    estado.produtosFiltrados = lista;
+
+    renderizarProdutos();
+    atualizarEstatisticas();
+}
+
+
+/* ============================================================
+   ESTATÍSTICAS
+============================================================ */
+
+function atualizarEstatisticas() {
+
+    elementos.totalProdutos.textContent =
+        estado.produtosFiltrados.length;
+
+
+    const scores =
+        estado.produtosFiltrados
+            .map(obterScore)
+            .filter(valor => valor !== null);
+
+
+    if (scores.length > 0) {
+
+        elementos.melhorScore.textContent =
+            Math.max(...scores)
+                .toLocaleString("pt-BR", {
+                    maximumFractionDigits: 1
+                });
+
+    } else {
+
+        elementos.melhorScore.textContent = "—";
+    }
+
+
+    const comissoes =
+        estado.produtosFiltrados
+            .map(obterComissaoEstimada)
+            .filter(valor => valor !== null);
+
+
+    if (comissoes.length > 0) {
+
+        elementos.maiorComissao.textContent =
+            moeda(Math.max(...comissoes));
+
+    } else {
+
+        elementos.maiorComissao.textContent = "—";
+    }
+}
+
+
+/* ============================================================
+   RENDERIZAÇÃO
+============================================================ */
+
+function renderizarProdutos() {
+
+    elementos.listaProdutos.innerHTML = "";
+
+    elementos.paginacao.innerHTML = "";
+
+
+    if (
+        !estado.produtosFiltrados.length
+    ) {
+
+        elementos.emptyState.style.display =
+            "block";
+
+        return;
+    }
+
+
+    elementos.emptyState.style.display =
+        "none";
+
+
+    estado.produtosFiltrados.forEach(
+        produto => {
+
+            const card =
+                criarCardProduto(produto);
+
+            elementos.listaProdutos
+                .appendChild(card);
+        }
+    );
+
+
+    renderizarPaginacao();
+}
+
+
+/* ============================================================
+   CARD DO PRODUTO
+============================================================ */
+
+function criarCardProduto(produto) {
+
+    const card =
+        document.createElement("article");
+
+    card.className =
+        "product-card";
+
+
+    const nome =
+        produto.nome ||
+        "Produto sem nome";
+
+
+    const loja =
+        produto.nome_loja ||
+        "Loja";
+
+
+    const imagem =
+        produto.imagem_url ||
+        "";
+
+
+    const preco =
+        produto.preco ??
+        produto.preco_min;
+
+
+    const vendas =
+        numero(produto.vendas);
+
+
+    const avaliacao =
+        numero(produto.avaliacao);
+
+
+    const taxa =
+        obterTaxaComissao(produto);
+
+
+    const comissao =
+        obterComissaoEstimada(produto);
+
+
+    const score =
+        obterScore(produto);
+
+
+    const desconto =
+        numero(
+            produto.desconto_percentual
+        );
+
+
+    const link =
+        produto.offer_link ||
+        produto.produto_link ||
+        "";
+
+
+    let imagemHtml;
+
+    if (imagem) {
+
+        imagemHtml = `
+            <img
+                class="product-image"
+                src="${escaparHtml(imagem)}"
+                alt="${escaparHtml(nome)}"
+                loading="lazy"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+            >
+
+            <div
+                class="product-image-placeholder"
+                style="display:none"
+            >
+                📦
+            </div>
+        `;
+
+    } else {
+
+        imagemHtml = `
+            <div class="product-image-placeholder">
+                📦
+            </div>
+        `;
+    }
+
+
+    const descontoHtml =
+        desconto !== null &&
+        desconto > 0
+            ? `
+                <div class="discount-badge">
+                    -${escaparHtml(
+                        desconto.toLocaleString(
+                            "pt-BR",
+                            {
+                                maximumFractionDigits: 0
+                            }
+                        )
+                    )}%
+                </div>
+            `
+            : "";
+
+
+    card.innerHTML = `
+
+        <div class="product-image-wrap">
+
+            ${imagemHtml}
+
+            ${descontoHtml}
+
         </div>
 
-        <div class="skeleton-grid hidden" id="skeletonGrid">
-          <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div><div class="skeleton-line h20 w40"></div></div></div>
-          <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div><div class="skeleton-line h20 w40"></div></div></div>
-          <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div><div class="skeleton-line h20 w40"></div></div></div>
-          <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div><div class="skeleton-line h20 w40"></div></div></div>
+
+        <div class="product-content">
+
+            <div class="product-name">
+                ${escaparHtml(nome)}
+            </div>
+
+
+            <div class="product-store">
+                🏪 ${escaparHtml(loja)}
+            </div>
+
+
+            <div class="product-price">
+                ${moeda(preco)}
+            </div>
+
+
+            <div class="product-meta">
+
+                <div class="meta-item">
+                    ⭐
+                    <strong>
+                        ${
+                            avaliacao !== null
+                                ? avaliacao.toLocaleString(
+                                    "pt-BR",
+                                    {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }
+                                )
+                                : "—"
+                        }
+                    </strong>
+                </div>
+
+
+                <div class="meta-item">
+                    🛒
+                    <strong>
+                        ${
+                            vendas !== null
+                                ? formatarNumero(vendas)
+                                : "—"
+                        }
+                    </strong>
+                </div>
+
+
+                <div class="meta-item">
+                    📈
+                    <strong>
+                        ${percentual(taxa)}
+                    </strong>
+                </div>
+
+
+                <div class="meta-item">
+                    🧠
+                    <strong>
+                        ${
+                            score !== null
+                                ? score.toLocaleString(
+                                    "pt-BR",
+                                    {
+                                        maximumFractionDigits: 1
+                                    }
+                                )
+                                : "—"
+                        }
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="commission-box">
+
+                <div class="commission-label">
+                    💰 Comissão estimada
+                </div>
+
+                <div class="commission-value">
+                    ${moeda(comissao)}
+                </div>
+
+            </div>
+
+
+            <div class="card-actions">
+
+                <button
+                    type="button"
+                    class="card-button primary"
+                    ${
+                        link
+                            ? ""
+                            : "disabled"
+                    }
+                    onclick="abrirProduto(
+                        '${escaparAtributo(link)}'
+                    )"
+                >
+                    🔗 Ver produto
+                </button>
+
+
+                <button
+                    type="button"
+                    class="card-button"
+                    ${
+                        link
+                            ? ""
+                            : "disabled"
+                    }
+                    onclick="copiarLink(
+                        '${escaparAtributo(link)}'
+                    )"
+                >
+                    📋 Copiar link
+                </button>
+
+            </div>
+
         </div>
+    `;
 
-        <div class="state-box hidden" id="stateBox">
-          <div class="state-icon" id="stateIcon">🔍</div>
-          <div class="state-title" id="stateTitle">Nenhum produto encontrado</div>
-          <p class="state-desc" id="stateDesc">Tente outro termo ou altere os filtros.</p>
-          <button type="button" class="btn btn-primary" id="btnRetry" style="display:none">Tentar novamente</button>
-        </div>
 
-        <div class="products-grid" id="productsGrid"></div>
-
-        <div class="pagination hidden" id="pagination">
-          <button type="button" class="btn btn-secondary btn-sm" id="btnPrev" disabled>← Anterior</button>
-          <span class="page-indicator" id="pageIndicator">Página 1</span>
-          <button type="button" class="btn btn-secondary btn-sm" id="btnNext" disabled>Próxima →</button>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal" id="modal">
-      <div class="modal-header">
-        <h2 class="modal-title" id="modalTitle">Detalhes do produto</h2>
-        <button type="button" class="modal-close" id="modalClose" aria-label="Fechar">×</button>
-      </div>
-      <div class="modal-body" id="modalBody"></div>
-    </div>
-  </div>
-
-  <div class="toast-container" id="toastContainer"></div>
+    return card;
+}
 
   <script>
-const estado = {
-produtos: [],
-produtosFiltrados: [],
-pagina: 1,
-limite: 20,
-hasNextPage: false,
-totalCarregados: 0,
-keyword: '',
-ordenacao: 'score',
-filtros: {
-precoMin: null,
-precoMax: null,
-comissaoMin: null,
-descontoMin: null,
-avaliacaoMin: null,
-vendasMin: null,
-loja: '',
-tipoLoja: '',
-ams: false,
-keySeller: false,
-categoria: ''
-},
-carregando: false,
-ultimaBusca: null,
-produtoSelecionado: null,
-session: null,
-abortController: null
-};
-function escapeHtml(str) {
-if (str == null) return '';
-return String(str)
-.replace(/&/g, '&amp;')
-.replace(/</g, '&lt;')
-.replace(/>/g, '&gt;')
-.replace(/"/g, '&quot;')
-.replace(/'/g, '&#39;');
-}
-function formatarPreco(valor) {
-if (valor == null || valor === '' || isNaN(Number(valor))) return '—';
-return Number(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-}
-function formatarComissao(valor) {
-if (valor == null || valor === '' || isNaN(Number(valor))) return '—';
-return formatarPreco(valor);
-}
-function formatarPercentual(valor) {
-if (valor == null || valor === '' || isNaN(Number(valor))) return '—';
-const n = Number(valor);
-const pct = n <= 1 && n > 0 ? n * 100 : n;
-return pct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%';
-}
-function formatarVendas(valor) {
-if (valor == null || valor === '' || isNaN(Number(valor))) return '—';
-const n = Number(valor);
-if (n >= 1000000) return (n / 1000000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' mi';
-if (n >= 1000) return (n / 1000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' mil';
-return n.toLocaleString('pt-BR');
-}
-function formatarAvaliacao(valor) {
-if (valor == null || valor === '' || isNaN(Number(valor))) return '—';
-return Number(valor).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-}
-function obterScore(produto) {
-if (produto.score != null && !isNaN(Number(produto.score))) return Number(produto.score);
-if (produto.produto_scores && produto.produto_scores.score != null) return Number(produto.produto_scores.score);
-return null;
-}
-function obterExplicacaoScore(produto) {
-if (produto.explicacao) return produto.explicacao;
-if (produto.produto_scores && produto.produto_scores.explicacao) return produto.produto_scores.explicacao;
-return null;
-}
-function classificarScore(score) {
-if (score == null) return { classe: '', label: '', emoji: '' };
-if (score >= 90) return { classe: 'score-excellent', label: 'Excelente oportunidade', emoji: '🔥' };
-if (score >= 75) return { classe: 'score-great', label: 'Ótima oportunidade', emoji: '✨' };
-if (score >= 60) return { classe: 'score-good', label: 'Boa oportunidade', emoji: '👍' };
-if (score >= 40) return { classe: 'score-moderate', label: 'Oportunidade moderada', emoji: '⚡' };
-return { classe: 'score-low', label: 'Baixo potencial', emoji: '📉' };
-}
-function obterLinkProduto(produto) {
-return produto.offer_link || produto.produto_link || null;
-}
-function obterTaxaComissao(produto) {
-if (produto.taxa_comissao != null) return Number(produto.taxa_comissao);
-const s = Number(produto.seller_commission_rate) || 0;
-const sh = Number(produto.shopee_commission_rate) || 0;
-if (s || sh) return s + sh;
-return null;
-}
-function obterComissaoEstimada(produto) {
-if (produto.comissao != null && !isNaN(Number(produto.comissao))) return Number(produto.comissao);
-const preco = Number(produto.preco) || Number(produto.preco_min) || 0;
-const taxa = obterTaxaComissao(produto);
-if (preco && taxa != null) {
-const t = taxa <= 1 ? taxa : taxa / 100;
-return preco * t;
-}
-return null;
-}
-function mostrarToast(mensagem, tipo = 'info', duracao = 3500) {
-const container = document.getElementById('toastContainer');
-const toast = document.createElement('div');
-toast.className = 'toast ' + tipo;
-const icons = { success: '✓', error: '!', info: 'i' };
-toast.innerHTML = '<span style="font-weight:700;opacity:0.8">' + (icons[tipo] || 'i') + '</span><span>' + escapeHtml(mensagem) + '</span>';
-container.appendChild(toast);
-setTimeout(() => {
-toast.style.opacity = '0';
-toast.style.transition = 'opacity 0.2s';
-setTimeout(() => toast.remove(), 200);
-}, duracao);
-}
-async function verificarSessao() {
-try {
-if (typeof supabaseClient === 'undefined') {
-console.error('supabaseClient não encontrado. Verifique supabase-config.js');
-mostrarErroAuth('Configuração do Supabase ausente.');
-return null;
-}
-const { data: { session }, error } = await supabaseClient.auth.getSession();
-if (error) {
-console.error('Erro ao obter sessão:', error);
-mostrarErroAuth('Erro ao verificar sessão.');
-return null;
-}
-if (!session) {
-window.location.href = 'login.html';
-return null;
-}
-estado.session = session;
-const badge = document.getElementById('authBadge');
-const label = document.getElementById('authLabel');
-if (badge) badge.classList.add('visible');
-if (label) {
-const email = session.user?.email || '';
-label.textContent = email ? email.split('@')[0] : 'Conectado';
-}
-supabaseClient.auth.onAuthStateChange((event, session) => {
-if (event === 'SIGNED_OUT' || !session) {
-window.location.href = 'login.html';
-} else {
-estado.session = session;
-}
-});
-return session;
-} catch (err) {
-console.error('verificarSessao:', err);
-mostrarErroAuth('Falha ao verificar autenticação.');
-return null;
-}
-}
-function mostrarErroAuth(msg) {
-const box = document.getElementById('stateBox');
-document.getElementById('stateIcon').textContent = '🔒';
-document.getElementById('stateTitle').textContent = 'Sua sessão expirou';
-document.getElementById('stateDesc').textContent = msg || 'Faça login novamente.';
-document.getElementById('btnRetry').style.display = 'none';
-box.classList.remove('hidden');
-setTimeout(() => { window.location.href = 'login.html'; }, 1800);
-}
-function montarFiltrosHTML() {
-return `
-<div class="filter-group">
-<label class="filter-label">Preço mínimo (R$)</label>
-<input type="number" class="filter-input filtro-campo" data-filtro="precoMin" placeholder="Ex: 20" min="0" step="0.01" />
-</div>
-<div class="filter-group">
-<label class="filter-label">Preço máximo (R$)</label>
-<input type="number" class="filter-input filtro-campo" data-filtro="precoMax" placeholder="Ex: 200" min="0" step="0.01" />
-</div>
-<div class="filter-group">
-<label class="filter-label">Comissão mínima (R$)</label>
-<input type="number" class="filter-input filtro-campo" data-filtro="comissaoMin" placeholder="Ex: 5" min="0" step="0.01" />
-</div>
-<div class="filter-group">
-<label class="filter-label">Desconto mínimo (%)</label>
-<input type="number" class="filter-input filtro-campo" data-filtro="descontoMin" placeholder="Ex: 10" min="0" max="100" step="1" />
-</div>
-<div class="filter-group">
-<label class="filter-label">Avaliação mínima</label>
-<input type="number" class="filter-input filtro-campo" data-filtro="avaliacaoMin" placeholder="Ex: 4.5" min="0" max="5" step="0.1" />
-</div>
-<div class="filter-group">
-<label class="filter-label">Vendas mínimas</label>
-<input type="number" class="filter-input filtro-campo" data-filtro="vendasMin" placeholder="Ex: 100" min="0" step="1" />
-</div>
-<div class="filter-group">
-<label class="filter-label">Loja</label>
-<input type="text" class="filter-input filtro-campo" data-filtro="loja" placeholder="Nome da loja" />
-</div>
-<div class="filter-group">
-<label class="filter-label">Tipo de loja</label>
-<select class="filter-select filtro-campo" data-filtro="tipoLoja">
-<option value="">Todos</option>
-<option value="mall">Shopee Mall</option>
-<option value="preferred">Preferred</option>
-<option value="normal">Normal</option>
-</select>
-</div>
-<div class="filter-group">
-<label class="filter-label">Categoria (texto)</label>
-<input type="text" class="filter-input filtro-campo" data-filtro="categoria" placeholder="Ex: eletrônicos" />
-</div>
-<div class="filter-group">
-<label class="filter-label">Opções especiais</label>
-<div class="filter-checkboxes">
-<label class="filter-check">
-<input type="checkbox" class="filtro-check" data-filtro="ams" />
-Oferta AMS
-</label>
-<label class="filter-check">
-<input type="checkbox" class="filtro-check" data-filtro="keySeller" />
-Key Seller
-</label>
-</div>
-</div>
-<div class="filters-actions">
-<button type="button" class="btn btn-primary btn-sm" id="btnAplicarFiltros">Aplicar filtros</button>
-<button type="button" class="btn btn-ghost btn-sm" id="btnResetFiltros">Limpar filtros</button>
-</div>
-`;
-}
-function sincronizarFiltrosParaEstado() {
-document.querySelectorAll('.filtro-campo').forEach(el => {
-const key = el.dataset.filtro;
-if (!key) return;
-if (el.type === 'number') {
-const v = el.value.trim();
-estado.filtros[key] = v === '' ? null : Number(v);
-} else {
-estado.filtros[key] = el.value.trim();
-}
-});
-document.querySelectorAll('.filtro-check').forEach(el => {
-const key = el.dataset.filtro;
-if (key) estado.filtros[key] = el.checked;
-});
-}
-function contarFiltrosAtivos() {
-let n = 0;
-const f = estado.filtros;
-if (f.precoMin != null) n++;
-if (f.precoMax != null) n++;
-if (f.comissaoMin != null) n++;
-if (f.descontoMin != null) n++;
-if (f.avaliacaoMin != null) n++;
-if (f.vendasMin != null) n++;
-if (f.loja) n++;
-if (f.tipoLoja) n++;
-if (f.categoria) n++;
-if (f.ams) n++;
-if (f.keySeller) n++;
-return n;
-}
-function atualizarBadgeFiltros() {
-const n = contarFiltrosAtivos();
-const badge = document.getElementById('filtersBadge');
-const toggle = document.getElementById('btnFiltros');
-if (n > 0) {
-badge.textContent = n;
-badge.classList.remove('hidden');
-toggle.classList.add('active');
-} else {
-badge.classList.add('hidden');
-toggle.classList.remove('active');
-}
-}
-function aplicarFiltrosLocais(lista) {
-const f = estado.filtros;
-return lista.filter(p => {
-const preco = Number(p.preco) || Number(p.preco_min) || 0;
-const comissao = obterComissaoEstimada(p);
-const desconto = Number(p.desconto_percentual) || 0;
-const avaliacao = Number(p.avaliacao) || 0;
-const vendas = Number(p.vendas) || 0;
-const loja = (p.nome_loja || '').toLowerCase();
-const tipo = (p.shop_type || '').toLowerCase();
-const cat = JSON.stringify(p.categoria_ids || p.dados_api || '').toLowerCase();
-if (f.precoMin != null && preco < f.precoMin) return false;
-if (f.precoMax != null && preco > f.precoMax) return false;
-if (f.comissaoMin != null && (comissao == null || comissao < f.comissaoMin)) return false;
-if (f.descontoMin != null && desconto < f.descontoMin) return false;
-if (f.avaliacaoMin != null && avaliacao < f.avaliacaoMin) return false;
-if (f.vendasMin != null && vendas < f.vendasMin) return false;
-if (f.loja && !loja.includes(f.loja.toLowerCase())) return false;
-if (f.tipoLoja) {
-const t = f.tipoLoja.toLowerCase();
-if (t === 'mall' && !tipo.includes('mall')) return false;
-if (t === 'preferred' && !tipo.includes('preferred') && !tipo.includes('prefer')) return false;
-if (t === 'normal' && (tipo.includes('mall') || tipo.includes('preferred'))) return false;
-}
-if (f.categoria && !cat.includes(f.categoria.toLowerCase()) && !(p.nome || '').toLowerCase().includes(f.categoria.toLowerCase())) return false;
-if (f.ams && !p.is_ams_offer) return false;
-if (f.keySeller && !p.is_key_seller) return false;
-return true;
-});
-}
-function ordenarProdutos(lista) {
-const arr = [...lista];
-const key = estado.ordenacao;
-arr.sort((a, b) => {
-switch (key) {
-case 'score': {
-const sa = obterScore(a);
-const sb = obterScore(b);
-if (sa == null && sb == null) return (Number(b.vendas) || 0) - (Number(a.vendas) || 0);
-if (sa == null) return 1;
-if (sb == null) return -1;
-return sb - sa;
-}
-case 'sales':
-return (Number(b.vendas) || 0) - (Number(a.vendas) || 0);
-case 'commission': {
-const ca = obterComissaoEstimada(a) || 0;
-const cb = obterComissaoEstimada(b) || 0;
-return cb - ca;
-}
-case 'discount':
-return (Number(b.desconto_percentual) || 0) - (Number(a.desconto_percentual) || 0);
-case 'rating':
-return (Number(b.avaliacao) || 0) - (Number(a.avaliacao) || 0);
-case 'price_asc': {
-const pa = Number(a.preco) || Number(a.preco_min) || Infinity;
-const pb = Number(b.preco) || Number(b.preco_min) || Infinity;
-return pa - pb;
-}
-case 'price_desc': {
-const pa = Number(a.preco) || Number(a.preco_min) || 0;
-const pb = Number(b.preco) || Number(b.preco_min) || 0;
-return pb - pa;
-}
-default:
-return 0;
-}
-});
-return arr;
-}
-function atualizarStats(lista) {
-const totalEl = document.getElementById('statTotal');
-const scoreEl = document.getElementById('statBestScore');
-const commEl = document.getElementById('statBestCommission');
-const salesEl = document.getElementById('statBestSales');
-if (!lista || lista.length === 0) {
-totalEl.textContent = '0';
-scoreEl.textContent = '—';
-commEl.textContent = '—';
-salesEl.textContent = '—';
-return;
-}
-totalEl.textContent = lista.length.toLocaleString('pt-BR');
-let bestScore = null;
-let bestComm = null;
-let bestSales = null;
-lista.forEach(p => {
-const s = obterScore(p);
-if (s != null && (bestScore == null || s > bestScore)) bestScore = s;
-const c = obterComissaoEstimada(p);
-if (c != null && (bestComm == null || c > bestComm)) bestComm = c;
-const v = Number(p.vendas);
-if (!isNaN(v) && (bestSales == null || v > bestSales)) bestSales = v;
-});
-scoreEl.textContent = bestScore != null ? Math.round(bestScore) : '—';
-commEl.textContent = bestComm != null ? formatarPreco(bestComm) : '—';
-salesEl.textContent = bestSales != null ? formatarVendas(bestSales) : '—';
-}
-function mostrarLoading(ativo) {
-estado.carregando = ativo;
-const bar = document.getElementById('loadingBar');
-const skel = document.getElementById('skeletonGrid');
-const grid = document.getElementById('productsGrid');
-const state = document.getElementById('stateBox');
-const pag = document.getElementById('pagination');
-const btnBuscar = document.getElementById('btnBuscar');
-if (ativo) {
-bar.classList.add('active');
-skel.classList.remove('hidden');
-grid.innerHTML = '';
-state.classList.add('hidden');
-pag.classList.add('hidden');
-btnBuscar.disabled = true;
-document.getElementById('resultsInfo').textContent = 'Buscando produtos...';
-} else {
-bar.classList.remove('active');
-skel.classList.add('hidden');
-btnBuscar.disabled = false;
-}
-}
-function mostrarEstadoVazio(titulo, desc, mostrarRetry = false) {
-const box = document.getElementById('stateBox');
-document.getElementById('stateIcon').textContent = '🔍';
-document.getElementById('stateTitle').textContent = titulo;
-document.getElementById('stateDesc').textContent = desc;
-const btn = document.getElementById('btnRetry');
-btn.style.display = mostrarRetry ? 'inline-flex' : 'none';
-box.classList.remove('hidden');
-document.getElementById('productsGrid').innerHTML = '';
-document.getElementById('pagination').classList.add('hidden');
-}
-function mostrarEstadoErro(titulo, desc) {
-const box = document.getElementById('stateBox');
-document.getElementById('stateIcon').textContent = '⚠️';
-document.getElementById('stateTitle').textContent = titulo;
-document.getElementById('stateDesc').textContent = desc;
-document.getElementById('btnRetry').style.display = 'inline-flex';
-box.classList.remove('hidden');
-document.getElementById('productsGrid').innerHTML = '';
-document.getElementById('pagination').classList.add('hidden');
-}
-async function buscarProdutos(resetPagina = true) {
-if (estado.carregando) return;
-if (!estado.session) {
-const s = await verificarSessao();
-if (!s) return;
-}
-const keywordInput = document.getElementById('keywordInput');
-const keywordSidebar = document.getElementById('keywordSidebar');
-if (document.activeElement === keywordSidebar) {
-keywordInput.value = keywordSidebar.value;
-} else if (keywordSidebar) {
-keywordSidebar.value = keywordInput.value;
-}
-const keyword = (keywordInput.value || '').trim();
-estado.keyword = keyword;
-if (resetPagina) estado.pagina = 1;
-if (estado.abortController) {
-try { estado.abortController.abort(); } catch (_) {}
-}
-estado.abortController = new AbortController();
-mostrarLoading(true);
-try {
-const body = {
-keyword: keyword || undefined,
-page: estado.pagina,
-limit: estado.limite,
-listType: undefined,
-sortType: undefined
-};
-Object.keys(body).forEach(k => body[k] === undefined && delete body[k]);
-const session = estado.session || (await supabaseClient.auth.getSession()).data.session;
+/* ============================================================
+   LINKS E AÇÕES DOS PRODUTOS
+============================================================ */
 
-if (!session?.access_token) {
-  mostrarErroAuth('Sua sessão expirou. Faça login novamente.');
-  return;
+function abrirProduto(url) {
+
+    if (!url) {
+        alert("Este produto não possui link disponível.");
+        return;
+    }
+
+    window.open(
+        url,
+        "_blank",
+        "noopener,noreferrer"
+    );
 }
 
-const { data, error } = await supabaseClient.functions.invoke('shopee-products-v2', {
-  body,
-  headers: {
-    Authorization: `Bearer ${session.access_token}`
-  }
-});
-if (error) {
-console.error('Edge Function error:', error);
-if (error.message && /auth|jwt|session|401|403/i.test(error.message)) {
-mostrarErroAuth('Sua sessão expirou. Faça login novamente.');
-return;
-}
-mostrarEstadoErro(
-'Não foi possível buscar produtos',
-'Ocorreu um erro ao consultar a Shopee. Tente novamente em instantes.'
-);
-mostrarToast('Erro na busca de produtos', 'error');
-return;
-}
-let produtos = [];
-let hasNext = false;
-let page = estado.pagina;
-if (Array.isArray(data)) {
-produtos = data;
-} else if (data && Array.isArray(data.produtos)) {
-produtos = data.produtos;
-hasNext = Boolean(data.hasNextPage);
-if (data.page != null) page = Number(data.page);
-} else if (data && Array.isArray(data.data)) {
-produtos = data.data;
-hasNext = Boolean(data.hasNextPage || data.has_next_page);
-if (data.page != null) page = Number(data.page);
-} else if (data && data.error) {
-mostrarEstadoErro('Erro na consulta', data.message || data.error || 'Tente novamente.');
-return;
-}
-estado.produtos = produtos;
-estado.hasNextPage = hasNext;
-estado.pagina = page;
-estado.totalCarregados = produtos.length;
-estado.ultimaBusca = Date.now();
-processarERenderizar();
-} catch (err) {
-if (err.name === 'AbortError') return;
-console.error('buscarProdutos:', err);
-mostrarEstadoErro(
-'Falha na conexão',
-'Não foi possível contatar o servidor. Verifique sua internet e tente novamente.'
-);
-mostrarToast('Falha na conexão', 'error');
-} finally {
-mostrarLoading(false);
-}
+
+async function copiarLink(url) {
+
+    if (!url) {
+        alert("Este produto não possui link disponível.");
+        return;
+    }
+
+    try {
+
+        await navigator.clipboard.writeText(url);
+
+        alert("✅ Link copiado com sucesso!");
+
+    } catch (erro) {
+
+        /*
+           Fallback para navegadores que não permitem
+           acesso ao clipboard.
+        */
+
+        const area =
+            document.createElement("textarea");
+
+        area.value = url;
+
+        area.style.position = "fixed";
+        area.style.opacity = "0";
+
+        document.body.appendChild(area);
+
+        area.focus();
+        area.select();
+
+        try {
+
+            document.execCommand("copy");
+
+            alert("✅ Link copiado com sucesso!");
+
+        } catch (erroCopia) {
+
+            window.prompt(
+                "Copie o link abaixo:",
+                url
+            );
+        }
+
+        area.remove();
+    }
 }
 
-function processarERenderizar() {
-sincronizarFiltrosParaEstado();
-atualizarBadgeFiltros();
-let lista = aplicarFiltrosLocais(estado.produtos);
-lista = ordenarProdutos(lista);
-estado.produtosFiltrados = lista;
-atualizarStats(lista);
-renderizarProdutos(lista);
-atualizarPaginacao();
-const info = document.getElementById('resultsInfo');
-if (lista.length === 0 && estado.produtos.length === 0) {
-mostrarEstadoVazio(
-'Nenhum produto encontrado',
-'Tente outro termo ou altere os filtros.'
-);
-info.textContent = 'Nenhum resultado';
-} else if (lista.length === 0 && estado.produtos.length > 0) {
-mostrarEstadoVazio(
-'Nenhum produto com esses filtros',
-'Os filtros locais removeram todos os resultados. Ajuste ou limpe os filtros.'
-);
-info.textContent = estado.produtos.length + ' produto(s) da API · 0 após filtros';
-} else {
-document.getElementById('stateBox').classList.add('hidden');
-const filtroNota = estado.produtos.length !== lista.length
-? ` · ${lista.length} após filtros`
-: '';
-info.innerHTML = `<strong>${lista.length}</strong> produto(s) nesta página${filtroNota}`;
+
+/* ============================================================
+   PAGINAÇÃO
+============================================================ */
+
+function renderizarPaginacao() {
+
+    elementos.paginacao.innerHTML = "";
+
+
+    if (
+        estado.produtosFiltrados.length === 0
+    ) {
+        elementos.paginaInfo.textContent = "";
+        return;
+    }
+
+
+    elementos.paginaInfo.textContent =
+        `Página ${estado.pagina}`;
+
+
+    /*
+       O backend da Shopee informa hasNextPage.
+       Neste momento carregamos 20 produtos por busca.
+    */
+
+    if (!estado.hasNextPage) {
+        return;
+    }
+
+
+    const botaoMais =
+        document.createElement("button");
+
+    botaoMais.type = "button";
+
+    botaoMais.className =
+        "btn btn-primary";
+
+    botaoMais.textContent =
+        "Carregar mais produtos";
+
+
+    botaoMais.addEventListener(
+        "click",
+        carregarProximaPagina
+    );
+
+
+    elementos.paginacao
+        .appendChild(botaoMais);
 }
+
+
+/* ============================================================
+   BUSCA DOS PRODUTOS
+============================================================ */
+
+async function buscarProdutos(
+    opcoes = {}
+) {
+
+    if (estado.carregando) {
+        return;
+    }
+
+
+    estado.carregando = true;
+
+
+    elementos.btnBuscar.disabled = true;
+
+
+    definirStatus(
+        "Buscando produtos...",
+        true
+    );
+
+
+    try {
+
+        /*
+           Recupera a sessão atual do Supabase.
+        */
+
+        const {
+            data: sessionData,
+            error: sessionError
+        } =
+            await supabaseClient.auth.getSession();
+
+
+        if (sessionError) {
+            throw sessionError;
+        }
+
+
+        const session =
+            sessionData?.session;
+
+
+        if (!session) {
+
+            window.location.href =
+                "index.html";
+
+            return;
+        }
+
+
+        estado.session =
+            session;
+
+
+        atualizarEstadoDosFiltros();
+
+
+        /*
+           Cancela uma busca anterior, caso exista.
+        */
+
+        if (estado.abortController) {
+
+            try {
+                estado.abortController.abort();
+            } catch (e) {}
+
+        }
+
+
+        estado.abortController =
+            new AbortController();
+
+
+        const pagina =
+            Number(
+                opcoes.pagina ??
+                estado.pagina ??
+                1
+            );
+
+
+        const body = {
+
+            page: pagina,
+
+            limit: estado.limite,
+
+            keyword:
+                estado.keyword || ""
+        };
+
+
+        /*
+           Chamada para a Edge Function atual.
+           
+           NÃO coloque SHOPEE_APP_ID,
+           SHOPEE_APP_SECRET ou service_role aqui.
+
+           Essas credenciais ficam somente
+           no backend/Edge Function.
+        */
+
+        const resultado =
+            await supabaseClient.functions.invoke(
+                "shopee-products-v2",
+                {
+                    body,
+
+                    headers: {
+                        Authorization:
+                            `Bearer ${session.access_token}`
+                    }
+                }
+            );
+
+
+        const data =
+            resultado?.data;
+
+        const error =
+            resultado?.error;
+
+
+        if (error) {
+
+            /*
+               Algumas versões do supabase-js
+               retornam erro sem expor imediatamente
+               o corpo da Edge Function.
+            */
+
+            let mensagem =
+                error.message ||
+                "Erro ao consultar produtos.";
+
+            try {
+
+                if (
+                    error.context &&
+                    typeof error.context.json === "function"
+                ) {
+
+                    const corpo =
+                        await error.context.json();
+
+                    mensagem =
+                        corpo?.message ||
+                        corpo?.error ||
+                        mensagem;
+                }
+
+            } catch (e) {}
+
+            throw new Error(mensagem);
+        }
+
+
+        /*
+           =====================================================
+           COMPATIBILIDADE COM AS POSSÍVEIS RESPOSTAS DA API
+           =====================================================
+
+           A versão atual da Edge Function pode retornar:
+
+           {
+               ok: true,
+               products: [...],
+               produtos: [...],
+               pageInfo: {...}
+           }
+
+           Também mantemos compatibilidade com:
+
+           data
+           array direto
+        */
+
+
+        let produtosRecebidos = [];
+
+        let hasNext = false;
+
+        let paginaRecebida = pagina;
+
+
+        if (Array.isArray(data)) {
+
+            produtosRecebidos =
+                normalizarLista(data);
+
+        }
+
+        else if (
+            data &&
+            Array.isArray(data.products)
+        ) {
+
+            produtosRecebidos =
+                normalizarLista(
+                    data.products
+                );
+
+
+            hasNext =
+                Boolean(
+                    data.hasNextPage ||
+                    data.pageInfo?.hasNextPage
+                );
+
+
+            if (
+                data.page !== null &&
+                data.page !== undefined
+            ) {
+
+                paginaRecebida =
+                    Number(data.page);
+
+            }
+
+            else if (
+                data.pageInfo?.page !== null &&
+                data.pageInfo?.page !== undefined
+            ) {
+
+                paginaRecebida =
+                    Number(
+                        data.pageInfo.page
+                    );
+            }
+        }
+
+        else if (
+            data &&
+            Array.isArray(data.produtos)
+        ) {
+
+            produtosRecebidos =
+                normalizarLista(
+                    data.produtos
+                );
+
+
+            hasNext =
+                Boolean(
+                    data.hasNextPage ||
+                    data.pageInfo?.hasNextPage
+                );
+
+
+            if (
+                data.page !== null &&
+                data.page !== undefined
+            ) {
+
+                paginaRecebida =
+                    Number(data.page);
+
+            }
+
+            else if (
+                data.pageInfo?.page !== null &&
+                data.pageInfo?.page !== undefined
+            ) {
+
+                paginaRecebida =
+                    Number(
+                        data.pageInfo.page
+                    );
+            }
+        }
+
+        else if (
+            data &&
+            Array.isArray(data.data)
+        ) {
+
+            produtosRecebidos =
+                normalizarLista(
+                    data.data
+                );
+
+
+            hasNext =
+                Boolean(
+                    data.hasNextPage ||
+                    data.pageInfo?.hasNextPage
+                );
+        }
+
+
+        /*
+           =====================================================
+           GARANTE QUE TODOS OS PRODUTOS TENHAM CAMPOS
+           COMPATÍVEIS COM A INTERFACE
+           =====================================================
+        */
+
+        produtosRecebidos =
+            produtosRecebidos
+                .map(normalizarProduto)
+                .filter(
+                    produto =>
+                        produto &&
+                        typeof produto === "object"
+                );
+
+
+        /*
+           =====================================================
+           PAGINAÇÃO
+           =====================================================
+        */
+
+        estado.pagina =
+            paginaRecebida;
+
+        estado.hasNextPage =
+            hasNext;
+
+
+        /*
+           Se for uma nova busca, substitui a lista.
+           Se for carregamento de próxima página,
+           acrescenta os produtos.
+        */
+
+        if (
+            opcoes.acumular &&
+            estado.produtos.length
+        ) {
+
+            estado.produtos = [
+                ...estado.produtos,
+                ...produtosRecebidos
+            ];
+
+        }
+
+        else {
+
+            estado.produtos =
+                produtosRecebidos;
+        }
+
+
+        estado.totalCarregados =
+            estado.produtos.length;
+
+
+        estado.ultimaBusca =
+            new Date();
+
+
+        /*
+           Aplica filtros DEPOIS da normalização.
+           
+           Isso é importante:
+           
+           productName → nome
+           priceMin → preco
+           sales → vendas
+           ratingStar → avaliacao
+           commissionRate → taxa_comissao
+        */
+
+        aplicarFiltrosLocais();
+
+
+        if (
+            produtosRecebidos.length > 0
+        ) {
+
+            definirStatus(
+                `${produtosRecebidos.length} produtos carregados.`
+            );
+
+        }
+
+        else {
+
+            definirStatus(
+                "Nenhum produto retornado pela busca."
+            );
+        }
+
+
+        console.log(
+            "Produtos recebidos da Edge Function:",
+            produtosRecebidos
+        );
+
+
+        console.log(
+            "Produtos normalizados:",
+            estado.produtos
+        );
+
+
+        /*
+           Mostra diagnóstico no console somente
+           para facilitar futuras correções.
+        */
+
+        if (
+            data &&
+            data.diagnostic
+        ) {
+
+            console.log(
+                "Diagnóstico Shopee:",
+                data.diagnostic
+            );
+        }
+
+    }
+
+    catch (erro) {
+
+        console.error(
+            "Erro ao buscar produtos:",
+            erro
+        );
+
+
+        const mensagem =
+            erro?.message ||
+            "Não foi possível carregar os produtos.";
+
+
+        definirStatus(
+            `❌ ${mensagem}`
+        );
+
+
+        /*
+           Não apagamos os produtos que já estavam
+           carregados caso uma busca posterior falhe.
+        */
+
+        if (
+            !estado.produtos.length
+        ) {
+
+            elementos.listaProdutos
+                .innerHTML = "";
+
+            elementos.emptyState.style.display =
+                "block";
+
+            elementos.emptyState.innerHTML = `
+
+                <div class="empty-icon">
+                    ⚠️
+                </div>
+
+                <div class="empty-title">
+                    Não foi possível carregar os produtos
+                </div>
+
+                <div>
+                    ${escaparHtml(mensagem)}
+                </div>
+
+            `;
+        }
+    }
+
+    finally {
+
+        estado.carregando =
+            false;
+
+        elementos.btnBuscar.disabled =
+            false;
+    }
 }
-function renderizarProdutos(lista) {
-const grid = document.getElementById('productsGrid');
-if (!lista || lista.length === 0) {
-grid.innerHTML = '';
-return;
+
+
+/* ============================================================
+   PRÓXIMA PÁGINA
+============================================================ */
+
+async function carregarProximaPagina() {
+
+    if (
+        estado.carregando ||
+        !estado.hasNextPage
+    ) {
+        return;
+    }
+
+
+    const proximaPagina =
+        Number(estado.pagina) + 1;
+
+
+    await buscarProdutos({
+        pagina: proximaPagina,
+        acumular: true
+    });
 }
-const html = lista.map((p, idx) => renderizarCardProduto(p, idx)).join('');
-grid.innerHTML = html;
+
+
+/* ============================================================
+   LIMPAR FILTROS
+============================================================ */
+
+function limparFiltros() {
+
+    elementos.keyword.value = "";
+
+    elementos.precoMin.value = "";
+
+    elementos.precoMax.value = "";
+
+    elementos.comissaoMin.value = "";
+
+    elementos.avaliacaoMin.value = "";
+
+    elementos.vendasMin.value = "";
+
+    elementos.loja.value = "";
+
+    elementos.ordenacao.value =
+        "score";
+
+
+    estado.keyword = "";
+
+    estado.ordenacao =
+        "score";
+
+
+    estado.filtros = {
+
+        precoMin: null,
+
+        precoMax: null,
+
+        comissaoMin: null,
+
+        avaliacaoMin: null,
+
+        vendasMin: null,
+
+        loja: ""
+    };
+
+
+    /*
+       Mantemos os produtos já carregados.
+       Apenas removemos os filtros locais.
+    */
+
+    aplicarFiltrosLocais();
 }
-function renderizarCardProduto(p, idx) {
-const score = obterScore(p);
-const scoreInfo = classificarScore(score);
-const link = obterLinkProduto(p);
-const comissao = obterComissaoEstimada(p);
-const taxa = obterTaxaComissao(p);
-const preco = p.preco != null ? Number(p.preco) : (p.preco_min != null ? Number(p.preco_min) : null);
-const precoMax = p.preco_max != null ? Number(p.preco_max) : null;
-const desconto = Number(p.desconto_percentual) || 0;
-const img = p.imagem_url || '';
-const nome = escapeHtml(p.nome || 'Produto sem nome');
-const loja = escapeHtml(p.nome_loja || 'Loja');
-const explicacao = obterExplicacaoScore(p);
-const scoreHtml = score != null
-? `<div class="score-badge ${scoreInfo.classe}">${scoreInfo.emoji} ${Math.round(score)}</div>`
-: '';
-const badges = [];
-if (p.is_ams_offer) badges.push('<span class="badge badge-ams">AMS</span>');
-if (p.is_key_seller) badges.push('<span class="badge badge-key">Key Seller</span>');
-if (desconto > 0) badges.push(`<span class="badge badge-discount">${Math.round(desconto)}% OFF</span>`);
-const precoRange = (precoMax && preco && precoMax > preco)
-? `${formatarPreco(preco)} – ${formatarPreco(precoMax)}`
-: formatarPreco(preco);
-const id = escapeHtml(p.id || p.item_id || idx);
-return `
-<article class="product-card" data-idx="${idx}" data-id="${id}">
-<div class="card-image-wrap">
-${img
-? `<img class="card-image" src="${escapeHtml(img)}" alt="${nome}" loading="lazy" onerror="this.classList.add('placeholder');this.removeAttribute('src');this.textContent='📦';" />`
-: `<div class="card-image placeholder">📦</div>`
+
+
+/* ============================================================
+   EVENTOS DOS FILTROS
+============================================================ */
+
+elementos.btnBuscar
+    .addEventListener(
+        "click",
+        () => {
+
+            estado.pagina = 1;
+
+            estado.hasNextPage =
+                false;
+
+            buscarProdutos({
+                pagina: 1,
+                acumular: false
+            });
+        }
+    );
+
+
+elementos.btnLimpar
+    .addEventListener(
+        "click",
+        limparFiltros
+    );
+
+
+elementos.ordenacao
+    .addEventListener(
+        "change",
+        aplicarFiltrosLocais
+    );
+
+
+elementos.keyword
+    .addEventListener(
+        "input",
+        () => {
+
+            /*
+               A pesquisa por palavra é local
+               até o usuário clicar em Buscar.
+            */
+
+            aplicarFiltrosLocais();
+        }
+    );
+
+
+elementos.precoMin
+    .addEventListener(
+        "input",
+        aplicarFiltrosLocais
+    );
+
+
+elementos.precoMax
+    .addEventListener(
+        "input",
+        aplicarFiltrosLocais
+    );
+
+
+elementos.comissaoMin
+    .addEventListener(
+        "input",
+        aplicarFiltrosLocais
+    );
+
+
+elementos.avaliacaoMin
+    .addEventListener(
+        "change",
+        aplicarFiltrosLocais
+    );
+
+
+elementos.vendasMin
+    .addEventListener(
+        "input",
+        aplicarFiltrosLocais
+    );
+
+
+elementos.loja
+    .addEventListener(
+        "input",
+        aplicarFiltrosLocais
+    );
+
+
+/* ============================================================
+   TECLA ENTER NA PESQUISA
+============================================================ */
+
+elementos.keyword
+    .addEventListener(
+        "keydown",
+        evento => {
+
+            if (
+                evento.key === "Enter"
+            ) {
+
+                evento.preventDefault();
+
+                elementos.btnBuscar.click();
+            }
+        }
+    );
+
+
+/* ============================================================
+   INICIALIZAÇÃO
+============================================================ */
+
+async function iniciarPagina() {
+
+    try {
+
+        definirStatus(
+            "Verificando acesso..."
+        );
+
+
+        /*
+           Verifica se o Supabase foi carregado.
+        */
+
+        if (
+            typeof supabaseClient ===
+            "undefined"
+        ) {
+
+            throw new Error(
+                "Supabase não foi configurado. Verifique o arquivo supabase-config.js."
+            );
+        }
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.auth
+                .getSession();
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        if (!data?.session) {
+
+            window.location.href =
+                "index.html";
+
+            return;
+        }
+
+
+        estado.session =
+            data.session;
+
+
+        definirStatus(
+            "Carregando produtos..."
+        );
+
+
+        await buscarProdutos({
+            pagina: 1,
+            acumular: false
+        });
+
+
+    }
+
+    catch (erro) {
+
+        console.error(
+            "Erro na inicialização:",
+            erro
+        );
+
+
+        definirStatus(
+            `❌ ${erro?.message || "Erro ao iniciar a página."}`
+        );
+    }
 }
-<div class="card-badges">${badges.join('')}</div>
-${scoreHtml}
-</div>
-<div class="card-body">
-<h3 class="card-name" data-action="detalhes">${nome}</h3>
-<div class="card-shop">🏪 ${loja}</div>
-<div class="card-meta">
-<span>⭐ ${formatarAvaliacao(p.avaliacao)}</span>
-<span>🛒 ${formatarVendas(p.vendas)} vendas</span>
-</div>
-<div class="card-price-row">
-<span class="card-price">${precoRange}</span>
-</div>
-<div class="card-commission">
-<strong>💰 Comissão est.: ${formatarComissao(comissao)}</strong>
-<span class="card-commission-rate">📈 Taxa: ${formatarPercentual(taxa)}</span>
-</div>
-${score != null && explicacao
-? `<div class="score-explanation">${escapeHtml(String(explicacao).slice(0, 120))}</div>`
-: (score != null ? `<div class="score-explanation">${scoreInfo.emoji} ${scoreInfo.label}</div>` : '')
-}
-<div class="card-actions">
-<button type="button" class="btn btn-secondary btn-sm" data-action="ver" ${link ? '' : 'disabled'}>Ver produto</button>
-<button type="button" class="btn btn-secondary btn-sm" data-action="divulgacao">Criar divulgação</button>
-<button type="button" class="btn btn-primary btn-sm card-actions-full" data-action="link">Criar link</button>
-</div>
-</div>
-</article>
-`;
-}
-function atualizarPaginacao() {
-const pag = document.getElementById('pagination');
-const btnPrev = document.getElementById('btnPrev');
-const btnNext = document.getElementById('btnNext');
-const indicator = document.getElementById('pageIndicator');
-if (estado.produtos.length === 0 && estado.pagina <= 1) {
-pag.classList.add('hidden');
-return;
-}
-pag.classList.remove('hidden');
-indicator.textContent = 'Página ' + estado.pagina;
-btnPrev.disabled = estado.pagina <= 1 || estado.carregando;
-btnNext.disabled = !estado.hasNextPage || estado.carregando;
-}
-function abrirDetalhesProduto(produto) {
-estado.produtoSelecionado = produto;
-const overlay = document.getElementById('modalOverlay');
-const body = document.getElementById('modalBody');
-const score = obterScore(produto);
-const scoreInfo = classificarScore(score);
-const explicacao = obterExplicacaoScore(produto);
-const link = obterLinkProduto(produto);
-const comissao = obterComissaoEstimada(produto);
-const taxa = obterTaxaComissao(produto);
-const preco = produto.preco != null ? Number(produto.preco) : Number(produto.preco_min);
-const img = produto.imagem_url || '';
-const motivos = [];
-if (score != null && score >= 75) motivos.push('Score alto de oportunidade (' + Math.round(score) + '/100)');
-if (Number(produto.vendas) >= 500) motivos.push('Volume relevante de vendas (' + formatarVendas(produto.vendas) + ')');
-if (comissao != null && comissao >= 5) motivos.push('Comissão estimada atrativa (' + formatarComissao(comissao) + ')');
-if (Number(produto.desconto_percentual) >= 15) motivos.push('Desconto destacado (' + Math.round(produto.desconto_percentual) + '% OFF)');
-if (Number(produto.avaliacao) >= 4.5) motivos.push('Avaliação elevada (' + formatarAvaliacao(produto.avaliacao) + '⭐)');
-if (produto.is_ams_offer) motivos.push('Participa de oferta AMS (maior chance de conversão)');
-if (produto.is_key_seller) motivos.push('Vendedor Key Seller (maior confiança)');
-if (explicacao) motivos.push(explicacao);
-const scoreBlock = score != null ? `
-<div class="modal-score-block">
-<div class="modal-score-num ${scoreInfo.classe}" style="background:none;padding:0">${scoreInfo.emoji} ${Math.round(score)}</div>
-<div>
-<div class="modal-score-label">${scoreInfo.label}</div>
-<div class="modal-score-exp">${explicacao ? escapeHtml(explicacao) : 'Score calculado com base em demanda, comissão, desconto e avaliação.'}</div>
-</div>
-</div>
-` : '';
-const whyBlock = motivos.length ? `
-<div class="modal-why">
-<div class="modal-why-title">💡 Por que este produto pode valer a pena?</div>
-<ul class="modal-why-list">
-${motivos.slice(0, 6).map(m => `<li>${escapeHtml(m)}</li>`).join('')}
-</ul>
-</div>
-` : '';
-body.innerHTML = `
-${img ? `<img class="modal-image" src="${escapeHtml(img)}" alt="" onerror="this.style.display='none'" />` : ''}
-<h3 class="modal-name">${escapeHtml(produto.nome || 'Produto')}</h3>
-${scoreBlock}
-${whyBlock}
-<div class="modal-section">
-<div class="modal-section-title">Informações principais</div>
-<div class="modal-grid">
-<div class="modal-field">
-<div class="modal-field-label">Preço</div>
-<div class="modal-field-value">${formatarPreco(preco)}</div>
-</div>
-<div class="modal-field">
-<div class="modal-field-label">Desconto</div>
-<div class="modal-field-value">${produto.desconto_percentual != null ? Math.round(produto.desconto_percentual) + '%' : '—'}</div>
-</div>
-<div class="modal-field">
-<div class="modal-field-label">Vendas</div>
-<div class="modal-field-value">${formatarVendas(produto.vendas)}</div>
-</div>
-<div class="modal-field">
-<div class="modal-field-label">Avaliação</div>
-<div class="modal-field-value">⭐ ${formatarAvaliacao(produto.avaliacao)}</div>
-</div>
-<div class="modal-field">
-<div class="modal-field-label">Comissão estimada</div>
-<div class="modal-field-value">${formatarComissao(comissao)}</div>
-</div>
-<div class="modal-field">
-<div class="modal-field-label">Taxa de comissão</div>
-<div class="modal-field-value">${formatarPercentual(taxa)}</div>
-</div>
-<div class="modal-field">
-<div class="modal-field-label">Loja</div>
-<div class="modal-field-value">${escapeHtml(produto.nome_loja || '—')}</div>
-</div>
-<div class="modal-field">
-<div class="modal-field-label">Tipo de loja</div>
-<div class="modal-field-value">${escapeHtml(produto.shop_type || '—')}</div>
-</div>
-</div>
-</div>
-<div class="modal-section">
-<div class="modal-section-title">Oferta e status</div>
-<div class="modal-grid">
-<div class="modal-field">
-<div class="modal-field-label">Oferta AMS</div>
-<div class="modal-field-value">${produto.is_ams_offer ? 'Sim' : 'Não'}</div>
-</div>
-<div class="modal-field">
-<div class="modal-field-label">Key Seller</div>
-<div class="modal-field-value">${produto.is_key_seller ? 'Sim' : 'Não'}</div>
-</div>
-<div class="modal-field">
-<div class="modal-field-label">Início da oferta</div>
-<div class="modal-field-value">${produto.periodo_inicio ? escapeHtml(String(produto.periodo_inicio).slice(0, 10)) : '—'}</div>
-</div>
-<div class="modal-field">
-<div class="modal-field-label">Fim da oferta</div>
-<div class="modal-field-value">${produto.periodo_fim ? escapeHtml(String(produto.periodo_fim).slice(0, 10)) : '—'}</div>
-</div>
-</div>
-</div>
-<div class="modal-actions">
-<button type="button" class="btn btn-secondary" data-modal-action="ver" ${link ? '' : 'disabled'}>Ver na Shopee</button>
-<button type="button" class="btn btn-secondary" data-modal-action="divulgacao">Criar divulgação</button>
-<button type="button" class="btn btn-primary" data-modal-action="link">Criar link de afiliado</button>
-</div>
-`;
-overlay.classList.add('open');
-document.body.style.overflow = 'hidden';
-}
-function fecharModal() {
-document.getElementById('modalOverlay').classList.remove('open');
-document.body.style.overflow = '';
-estado.produtoSelecionado = null;
-}
-function verProduto(produto) {
-const link = obterLinkProduto(produto);
-if (!link) {
-mostrarToast('Link do produto indisponível', 'error');
-return;
-}
-window.open(link, '_blank', 'noopener,noreferrer');
-}
-function criarDivulgacao(produto) {
-const id = produto.id || produto.item_id;
-if (!id) {
-mostrarToast('Produto sem identificador', 'error');
-return;
-}
-window.location.href = 'divulgacao.html?produto_id=' + encodeURIComponent(id);
-}
-function criarLinkAfiliado(produto) {
-const id = produto.id || produto.item_id;
-if (!id) {
-mostrarToast('Produto sem identificador', 'error');
-return;
-}
-const params = new URLSearchParams({
-produto_id: id,
-nome: produto.nome || '',
-origin_url: obterLinkProduto(produto) || ''
-});
-window.location.href = 'links.html?acao=criar&' + params.toString();
-}
-function configurarEventos() {
-document.getElementById('btnBuscar').addEventListener('click', () => buscarProdutos(true));
-document.getElementById('keywordInput').addEventListener('keydown', (e) => {
-if (e.key === 'Enter') {
-e.preventDefault();
-buscarProdutos(true);
-}
-});
-const kwSidebar = document.getElementById('keywordSidebar');
-if (kwSidebar) {
-kwSidebar.addEventListener('keydown', (e) => {
-if (e.key === 'Enter') {
-e.preventDefault();
-document.getElementById('keywordInput').value = kwSidebar.value;
-buscarProdutos(true);
-}
-});
-}
-document.getElementById('btnLimpar').addEventListener('click', () => {
-document.getElementById('keywordInput').value = '';
-if (kwSidebar) kwSidebar.value = '';
-document.querySelectorAll('.filtro-campo').forEach(el => {
-if (el.tagName === 'SELECT') el.value = '';
-else el.value = '';
-});
-document.querySelectorAll('.filtro-check').forEach(el => { el.checked = false; });
-estado.filtros = {
-precoMin: null, precoMax: null, comissaoMin: null, descontoMin: null,
-avaliacaoMin: null, vendasMin: null, loja: '', tipoLoja: '', ams: false, keySeller: false, categoria: ''
-};
-estado.produtos = [];
-estado.produtosFiltrados = [];
-estado.pagina = 1;
-estado.hasNextPage = false;
-atualizarBadgeFiltros();
-atualizarStats([]);
-document.getElementById('productsGrid').innerHTML = '';
-document.getElementById('pagination').classList.add('hidden');
-document.getElementById('stateBox').classList.add('hidden');
-document.getElementById('resultsInfo').textContent = 'Faça uma busca para descobrir produtos';
-document.getElementById('statTotal').textContent = '—';
-});
-document.getElementById('btnFiltros').addEventListener('click', () => {
-const panel = document.getElementById('filtersPanelMobile');
-const open = panel.classList.toggle('open');
-document.getElementById('btnFiltros').setAttribute('aria-expanded', open);
-});
-document.getElementById('sortSelect').addEventListener('change', (e) => {
-estado.ordenacao = e.target.value;
-if (estado.produtos.length) processarERenderizar();
-});
-document.getElementById('btnPrev').addEventListener('click', () => {
-if (estado.pagina > 1 && !estado.carregando) {
-estado.pagina -= 1;
-buscarProdutos(false);
-window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-});
-document.getElementById('btnNext').addEventListener('click', () => {
-if (estado.hasNextPage && !estado.carregando) {
-estado.pagina += 1;
-buscarProdutos(false);
-window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-});
-document.getElementById('btnRetry').addEventListener('click', () => buscarProdutos(true));
-document.getElementById('productsGrid').addEventListener('click', (e) => {
-const card = e.target.closest('.product-card');
-if (!card) return;
-const idx = Number(card.dataset.idx);
-const produto = estado.produtosFiltrados[idx];
-if (!produto) return;
-const action = e.target.closest('[data-action]')?.dataset.action;
-if (action === 'ver') {
-verProduto(produto);
-} else if (action === 'divulgacao') {
-criarDivulgacao(produto);
-} else if (action === 'link') {
-criarLinkAfiliado(produto);
-} else if (action === 'detalhes' || e.target.classList.contains('card-name') || e.target.classList.contains('card-image')) {
-abrirDetalhesProduto(produto);
-}
-});
-document.getElementById('modalClose').addEventListener('click', fecharModal);
-document.getElementById('modalOverlay').addEventListener('click', (e) => {
-if (e.target === document.getElementById('modalOverlay')) fecharModal();
-});
-document.addEventListener('keydown', (e) => {
-if (e.key === 'Escape') fecharModal();
-});
-document.getElementById('modalBody').addEventListener('click', (e) => {
-const action = e.target.closest('[data-modal-action]')?.dataset.modalAction;
-if (!action || !estado.produtoSelecionado) return;
-if (action === 'ver') verProduto(estado.produtoSelecionado);
-else if (action === 'divulgacao') criarDivulgacao(estado.produtoSelecionado);
-else if (action === 'link') criarLinkAfiliado(estado.produtoSelecionado);
-});
-document.addEventListener('click', (e) => {
-if (e.target.id === 'btnAplicarFiltros' || e.target.closest('#btnAplicarFiltros')) {
-sincronizarFiltrosParaEstado();
-document.querySelectorAll('.filtro-campo').forEach(el => {
-const key = el.dataset.filtro;
-const val = estado.filtros[key];
-if (el.type === 'number') el.value = val != null ? val : '';
-else if (el.tagName === 'SELECT' || el.type === 'text') el.value = val || '';
-});
-document.querySelectorAll('.filtro-check').forEach(el => {
-el.checked = Boolean(estado.filtros[el.dataset.filtro]);
-});
-atualizarBadgeFiltros();
-if (estado.produtos.length) processarERenderizar();
-else mostrarToast('Faça uma busca primeiro', 'info');
-}
-if (e.target.id === 'btnResetFiltros' || e.target.closest('#btnResetFiltros')) {
-document.querySelectorAll('.filtro-campo').forEach(el => {
-if (el.tagName === 'SELECT') el.value = '';
-else el.value = '';
-});
-document.querySelectorAll('.filtro-check').forEach(el => { el.checked = false; });
-estado.filtros = {
-precoMin: null, precoMax: null, comissaoMin: null, descontoMin: null,
-avaliacaoMin: null, vendasMin: null, loja: '', tipoLoja: '', ams: false, keySeller: false, categoria: ''
-};
-atualizarBadgeFiltros();
-if (estado.produtos.length) processarERenderizar();
-}
-});
-}
-async function init() {
-const filtrosHtml = montarFiltrosHTML();
-document.getElementById('filtersPanelMobile').innerHTML = filtrosHtml;
-const desktopPanel = document.getElementById('filtersPanelDesktop');
-if (desktopPanel) desktopPanel.innerHTML = filtrosHtml;
-configurarEventos();
-const session = await verificarSessao();
-if (!session) return;
-document.getElementById('keywordInput').focus();
-}
-if (document.readyState === 'loading') {
-document.addEventListener('DOMContentLoaded', init);
-} else {
-init();
-}
-  </script>
-</body>
+
+
+/* ============================================================
+   INICIAR
+============================================================ */
+
+iniciarPagina();
+
+</script>
+
+  </body>
 </html>
