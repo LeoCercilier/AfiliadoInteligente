@@ -16,7 +16,6 @@
 <body>
   <div class="loading-bar" id="loadingBar"></div>
 
-  <!-- HEADER -->
   <header class="header">
     <div class="header-inner">
       <a href="dashboard.html" class="brand" title="Voltar ao Dashboard">
@@ -39,7 +38,6 @@
       <p class="page-subtitle">Encontre produtos com potencial real de divulgação. Use filtros e o score inteligente para priorizar o que vale a pena promover.</p>
     </div>
 
-    <!-- STATS -->
     <div class="stats-bar" id="statsBar">
       <div class="stat-card">
         <div class="stat-label">Produtos encontrados</div>
@@ -60,7 +58,6 @@
     </div>
 
     <div class="main-layout">
-      <!-- SIDEBAR FILTERS (desktop) -->
       <aside class="filters-sidebar" id="filtersSidebar">
         <div class="search-section">
           <div class="filter-group" style="margin-bottom:12px">
@@ -70,14 +67,11 @@
               <input type="text" id="keywordSidebar" class="search-input" placeholder="Digite o nome do produto..." autocomplete="off" />
             </div>
           </div>
-          <div class="filters-panel open" id="filtersPanelDesktop">
-            <!-- filters injected -->
-          </div>
+          <div class="filters-panel open" id="filtersPanelDesktop"></div>
         </div>
       </aside>
 
       <div class="content-area">
-        <!-- SEARCH (mobile + shared) -->
         <div class="search-section" id="searchSection">
           <div class="search-row">
             <div class="search-input-wrap">
@@ -90,12 +84,9 @@
               Filtros <span class="filters-badge hidden" id="filtersBadge">0</span>
             </button>
           </div>
-          <div class="filters-panel" id="filtersPanelMobile">
-            <!-- filters injected -->
-          </div>
+          <div class="filters-panel" id="filtersPanelMobile"></div>
         </div>
 
-        <!-- TOOLBAR -->
         <div class="toolbar">
           <div class="results-info" id="resultsInfo">Faça uma busca para descobrir produtos</div>
           <div class="sort-wrap">
@@ -112,7 +103,6 @@
           </div>
         </div>
 
-        <!-- LOADING SKELETON -->
         <div class="skeleton-grid hidden" id="skeletonGrid">
           <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div><div class="skeleton-line h20 w40"></div></div></div>
           <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div><div class="skeleton-line h20 w40"></div></div></div>
@@ -120,7 +110,6 @@
           <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div><div class="skeleton-line h20 w40"></div></div></div>
         </div>
 
-        <!-- EMPTY / ERROR -->
         <div class="state-box hidden" id="stateBox">
           <div class="state-icon" id="stateIcon">🔍</div>
           <div class="state-title" id="stateTitle">Nenhum produto encontrado</div>
@@ -128,10 +117,8 @@
           <button type="button" class="btn btn-primary" id="btnRetry" style="display:none">Tentar novamente</button>
         </div>
 
-        <!-- PRODUCTS -->
         <div class="products-grid" id="productsGrid"></div>
 
-        <!-- PAGINATION -->
         <div class="pagination hidden" id="pagination">
           <button type="button" class="btn btn-secondary btn-sm" id="btnPrev" disabled>← Anterior</button>
           <span class="page-indicator" id="pageIndicator">Página 1</span>
@@ -141,22 +128,19 @@
     </div>
   </main>
 
-  <!-- PRODUCT DETAIL MODAL -->
   <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal" id="modal">
       <div class="modal-header">
         <h2 class="modal-title" id="modalTitle">Detalhes do produto</h2>
         <button type="button" class="modal-close" id="modalClose" aria-label="Fechar">×</button>
       </div>
-      <div class="modal-body" id="modalBody">
-        <!-- filled by JS -->
-      </div>
+      <div class="modal-body" id="modalBody"></div>
     </div>
   </div>
 
-  <!-- TOASTS -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <script src="produtos.js"></script>
+  <script src="produtos-core.js"></script>
+  <script src="produtos-ui.js"></script>
 </body>
 </html>
