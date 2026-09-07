@@ -2842,8 +2842,20 @@ async function iniciarPagina() {
    INICIAR
 ============================================================ */
 
-iniciarPagina();
+try {
+    console.log("Afiliado Inteligente: iniciando...");
+    iniciarPagina();
+} catch (erro) {
+    console.error("Erro ao iniciar a página:", erro);
 
+    const status = document.getElementById("statusBusca");
+
+    if (status) {
+        status.textContent =
+            "❌ Erro ao iniciar a busca: " +
+            (erro?.message || erro);
+    }
+}
 </script>
 
   </body>
