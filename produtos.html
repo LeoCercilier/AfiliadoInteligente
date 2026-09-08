@@ -1785,9 +1785,14 @@ function atualizarEstatisticas() {
 
 
     const scores =
-        estado.produtosFiltrados
-            .map(obterScore)
-            .filter(valor => valor !== null);
+    estado.produtosFiltrados
+        .map(produto =>
+            obterScore(
+                produto,
+                estado.produtosFiltrados
+            )
+        )
+        .filter(valor => valor !== null);
 
 
     if (scores.length > 0) {
@@ -2090,8 +2095,7 @@ function criarCardProduto(produto) {
         })()
     }
 </div>
-                                )
-                                : "—"
+                    
                         }
                     </strong>
                 </div>
