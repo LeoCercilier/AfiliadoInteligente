@@ -2046,16 +2046,50 @@ function criarCardProduto(produto) {
                 </div>
 
 
-                <div class="meta-item">
-                    🧠
-                    <strong>
-                        ${
-                            score !== null
-                                ? score.toLocaleString(
-                                    "pt-BR",
-                                    {
-                                        maximumFractionDigits: 1
-                                    }
+                <div class="meta-item score-meta">
+    🧠 Score
+    <strong>
+        ${
+            score !== null
+                ? score.toLocaleString(
+                    "pt-BR",
+                    {
+                        maximumFractionDigits: 1
+                    }
+                )
+                : "—"
+        }
+    </strong>
+
+    ${
+        (() => {
+            const infoScore =
+                gerarExplicacaoScore(
+                    produto,
+                    produtosAtuais
+                );
+
+            return `
+                <div class="score-classificacao">
+                    ${infoScore.emoji}
+                    ${infoScore.nivel}
+                </div>
+
+                ${
+                    infoScore.pontos.length
+                        ? `
+                            <div class="score-explicacao">
+                                ${infoScore.pontos
+                                    .slice(0, 3)
+                                    .join(" • ")}
+                            </div>
+                          `
+                        : ""
+                }
+            `;
+        })()
+    }
+</div>
                                 )
                                 : "—"
                         }
