@@ -1334,27 +1334,81 @@ function obterComissaoEstimada(produto) {
 
 function obterScore(produto) {
 
-    const score = numero(produto?.score);
-
-    if (score !== null) {
-        return score;
-    }
-
-    const produtoScores = numero(
-        produto?.produto_scores
-    );
-
-    if (produtoScores !== null) {
-        return produtoScores;
-    }
+    const vendas = numero(produto?.vendas) ?? 0;
+    const avaliacao = numero(produto?.avaliacao) ?? 0;
+    const taxaComissao = obterTaxaComissao(produto) ?? 0;
+    const comissao = obterComissaoEstimada(produto) ?? 0;
+    const desconto = numero(produto?.desconto_percentual) ?? 0;
 
     /*
-       Produtos que ainda não possuem score salvo
-       continuam disponíveis. O score será mostrado como —
-       até que o sistema tenha um score calculado.
+       SCORE INTELIGENTE — 0 a 100
+
+       Pesos:
+       Comissão estimada: 30%
+       Vendas:             25%
+       Avaliação:          20%
+       Taxa de comissão:   15%
+       Desconto:           10%
     */
 
-    return null;
+    // Comissão estimada:
+    // R$ 30 ou mais recebe pontuação máxima.
+    const pontosComissao = Math.min(
+        comissao / 30,
+        1
+    ) * 30;
+
+
+    // Vendas:
+    // Usa escala logarítmica para evitar que
+    // produtos com milhares de vendas dominem tudo.
+    const pontosVendas =
+        Math.min(
+            Math.log10(vendas + 1) /
+            Math.log10(10001),
+            1
+        ) * 25;
+
+
+    // Avaliação:
+    // 5 estrelas = pontuação máxima.
+    const pontosAvaliacao =
+        Math.min(
+            avaliacao / 5,
+            1
+        ) * 20;
+
+
+    // Taxa de comissão:
+    // 30% ou mais = pontuação máxima.
+    const pontosTaxa =
+        Math.min(
+            taxaComissao / 0.30,
+            1
+        ) * 15;
+
+
+    // Desconto:
+    // 50% ou mais = pontuação máxima.
+    const pontosDesconto =
+        Math.min(
+            desconto / 50,
+            1
+        ) * 10;
+
+
+    const score =
+        pontosComissao +
+        pontosVendas +
+        pontosAvaliacao +
+        pontosTaxa +
+        pontosDesconto;
+
+
+    return Math.min(
+        Math.max(score, 0),
+        100
+    );
 }
 
 
