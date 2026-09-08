@@ -1332,7 +1332,9 @@ function obterComissaoEstimada(produto) {
    SCORE
 ============================================================ */
 
-function obterScore(produto) {
+function obterScore(produto, lista = produtosAtuais) {
+
+    if (!produto) return 0;
 
     const vendas = numero(produto?.vendas) ?? 0;
     const avaliacao = numero(produto?.avaliacao) ?? 0;
@@ -1340,62 +1342,67 @@ function obterScore(produto) {
     const comissao = obterComissaoEstimada(produto) ?? 0;
     const desconto = numero(produto?.desconto_percentual) ?? 0;
 
-    /*
-       SCORE INTELIGENTE — 0 a 100
+    const produtos = Array.isArray(lista) && lista.length
+        ? lista
+        : [produto];
 
-       Pesos:
-       Comissão estimada: 30%
-       Vendas:             25%
-       Avaliação:          20%
-       Taxa de comissão:   15%
-       Desconto:           10%
+    const vendasLista = produtos.map(p =>
+        numero(p?.vendas) ?? 0
+    );
+
+    const comissoesLista = produtos.map(p =>
+        obterComissaoEstimada(p) ?? 0
+    );
+
+    const taxasLista = produtos.map(p =>
+        obterTaxaComissao(p) ?? 0
+    );
+
+    const descontosLista = produtos.map(p =>
+        numero(p?.desconto_percentual) ?? 0
+    );
+
+    const maiorVenda = Math.max(...vendasLista, 1);
+    const maiorComissao = Math.max(...comissoesLista, 1);
+    const maiorTaxa = Math.max(...taxasLista, 0.01);
+    const maiorDesconto = Math.max(...descontosLista, 1);
+
+    /*
+       SCORE DE OPORTUNIDADE — 0 a 100
+
+       💰 Comissão estimada: 30%
+       🛒 Vendas:             25%
+       ⭐ Avaliação:          20%
+       📈 Taxa comissão:     15%
+       🔥 Desconto:          10%
     */
 
-    // Comissão estimada:
-    // R$ 30 ou mais recebe pontuação máxima.
-    const pontosComissao = Math.min(
-        comissao / 30,
-        1
-    ) * 30;
+    // Comissão: quanto maior dentro da busca, melhor
+    const pontosComissao =
+        (comissao / maiorComissao) * 30;
 
+    // Vendas: escala logarítmica para evitar que
+    // produtos gigantescos dominem completamente
+    const vendasNormalizadas =
+        vendas > 0 && maiorVenda > 0
+            ? Math.log10(vendas + 1) /
+              Math.log10(maiorVenda + 1)
+            : 0;
 
-    // Vendas:
-    // Usa escala logarítmica para evitar que
-    // produtos com milhares de vendas dominem tudo.
     const pontosVendas =
-        Math.min(
-            Math.log10(vendas + 1) /
-            Math.log10(10001),
-            1
-        ) * 25;
+        vendasNormalizadas * 25;
 
-
-    // Avaliação:
-    // 5 estrelas = pontuação máxima.
+    // Avaliação de 0 a 5
     const pontosAvaliacao =
-        Math.min(
-            avaliacao / 5,
-            1
-        ) * 20;
+        Math.min(avaliacao / 5, 1) * 20;
 
-
-    // Taxa de comissão:
-    // 30% ou mais = pontuação máxima.
+    // Taxa de comissão relativa aos produtos encontrados
     const pontosTaxa =
-        Math.min(
-            taxaComissao / 0.30,
-            1
-        ) * 15;
+        (taxaComissao / maiorTaxa) * 15;
 
-
-    // Desconto:
-    // 50% ou mais = pontuação máxima.
+    // Desconto relativo aos produtos encontrados
     const pontosDesconto =
-        Math.min(
-            desconto / 50,
-            1
-        ) * 10;
-
+        (desconto / maiorDesconto) * 10;
 
     const score =
         pontosComissao +
@@ -1404,13 +1411,11 @@ function obterScore(produto) {
         pontosTaxa +
         pontosDesconto;
 
-
     return Math.min(
         Math.max(score, 0),
         100
     );
 }
-
 
 /* ============================================================
    STATUS
