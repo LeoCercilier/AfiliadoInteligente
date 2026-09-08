@@ -1438,6 +1438,96 @@ function obterScore(produto, lista = produtosAtuais) {
     );
 }
 
+    function obterClassificacaoScore(score) {
+
+    if (score >= 80) {
+        return {
+            nivel: "Excelente oportunidade",
+            emoji: "🟢"
+        };
+    }
+
+    if (score >= 65) {
+        return {
+            nivel: "Boa oportunidade",
+            emoji: "🔵"
+        };
+    }
+
+    if (score >= 50) {
+        return {
+            nivel: "Oportunidade moderada",
+            emoji: "🟡"
+        };
+    }
+
+    if (score >= 35) {
+        return {
+            nivel: "Baixo potencial",
+            emoji: "🟠"
+        };
+    }
+
+    return {
+        nivel: "Pouco atrativo",
+        emoji: "🔴"
+    };
+    }
+
+    function gerarExplicacaoScore(produto, lista = produtosAtuais) {
+
+    const score = obterScore(produto, lista);
+
+    const vendas = numero(produto?.vendas) ?? 0;
+    const avaliacao = numero(produto?.avaliacao) ?? 0;
+    const taxa = obterTaxaComissao(produto) ?? 0;
+    const comissao = obterComissaoEstimada(produto) ?? 0;
+
+    const pontos = [];
+
+    if (comissao >= 20) {
+        pontos.push("💰 Comissão alta");
+    } else if (comissao >= 10) {
+        pontos.push("💰 Boa comissão");
+    }
+
+    if (vendas >= 10000) {
+        pontos.push("🛒 Demanda muito alta");
+    } else if (vendas >= 1000) {
+        pontos.push("🛒 Muitas vendas");
+    } else if (vendas >= 100) {
+        pontos.push("🛒 Boa demanda");
+    }
+
+    if (avaliacao >= 4.8) {
+        pontos.push("⭐ Avaliação excelente");
+    } else if (avaliacao >= 4.5) {
+        pontos.push("⭐ Boa avaliação");
+    }
+
+    if (taxa >= 0.20) {
+        pontos.push("📈 Taxa de comissão alta");
+    }
+
+    if (!vendas) {
+        pontos.push("⚠️ Sem histórico de vendas");
+    }
+
+    if (!avaliacao) {
+        pontos.push("⚠️ Sem avaliação");
+    }
+
+    const classificacao =
+        obterClassificacaoScore(score);
+
+    return {
+        score,
+        nivel: classificacao.nivel,
+        emoji: classificacao.emoji,
+        pontos
+    };
+    }
+
 /* ============================================================
    STATUS
 ============================================================ */
