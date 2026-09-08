@@ -1336,15 +1336,16 @@ function obterScore(produto, lista = produtosAtuais) {
 
     if (!produto) return 0;
 
+    const produtos =
+        Array.isArray(lista) && lista.length
+            ? lista
+            : [produto];
+
     const vendas = numero(produto?.vendas) ?? 0;
     const avaliacao = numero(produto?.avaliacao) ?? 0;
     const taxaComissao = obterTaxaComissao(produto) ?? 0;
     const comissao = obterComissaoEstimada(produto) ?? 0;
     const desconto = numero(produto?.desconto_percentual) ?? 0;
-
-    const produtos = Array.isArray(lista) && lista.length
-        ? lista
-        : [produto];
 
     const vendasLista = produtos.map(p =>
         numero(p?.vendas) ?? 0
@@ -1362,29 +1363,42 @@ function obterScore(produto, lista = produtosAtuais) {
         numero(p?.desconto_percentual) ?? 0
     );
 
-    const maiorVenda = Math.max(...vendasLista, 1);
-    const maiorComissao = Math.max(...comissoesLista, 1);
-    const maiorTaxa = Math.max(...taxasLista, 0.01);
-    const maiorDesconto = Math.max(...descontosLista, 1);
+    const maiorVenda =
+        Math.max(...vendasLista, 1);
+
+    const maiorComissao =
+        Math.max(...comissoesLista, 1);
+
+    const maiorTaxa =
+        Math.max(...taxasLista, 0.01);
+
+    const maiorDesconto =
+        Math.max(...descontosLista, 1);
+
 
     /*
-       SCORE DE OPORTUNIDADE — 0 a 100
+     * ==========================================
+     * 🧠 SCORE DE OPORTUNIDADE
+     * ==========================================
+     *
+     * Comissão estimada  → 30%
+     * Vendas              → 25%
+     * Avaliação           → 20%
+     * Taxa de comissão    → 15%
+     * Desconto            → 10%
+     *
+     * Total                → 100%
+     */
 
-       💰 Comissão estimada: 30%
-       🛒 Vendas:             25%
-       ⭐ Avaliação:          20%
-       📈 Taxa comissão:     15%
-       🔥 Desconto:          10%
-    */
 
-    // Comissão: quanto maior dentro da busca, melhor
+    // 💰 Comissão
     const pontosComissao =
         (comissao / maiorComissao) * 30;
 
-    // Vendas: escala logarítmica para evitar que
-    // produtos gigantescos dominem completamente
+
+    // 🛒 Vendas
     const vendasNormalizadas =
-        vendas > 0 && maiorVenda > 0
+        vendas > 0
             ? Math.log10(vendas + 1) /
               Math.log10(maiorVenda + 1)
             : 0;
@@ -1392,17 +1406,23 @@ function obterScore(produto, lista = produtosAtuais) {
     const pontosVendas =
         vendasNormalizadas * 25;
 
-    // Avaliação de 0 a 5
-    const pontosAvaliacao =
-        Math.min(avaliacao / 5, 1) * 20;
 
-    // Taxa de comissão relativa aos produtos encontrados
+    // ⭐ Avaliação
+    const pontosAvaliacao =
+        avaliacao > 0
+            ? Math.min(avaliacao / 5, 1) * 20
+            : 0;
+
+
+    // 📈 Taxa de comissão
     const pontosTaxa =
         (taxaComissao / maiorTaxa) * 15;
 
-    // Desconto relativo aos produtos encontrados
+
+    // 🔥 Desconto
     const pontosDesconto =
         (desconto / maiorDesconto) * 10;
+
 
     const score =
         pontosComissao +
@@ -1410,6 +1430,7 @@ function obterScore(produto, lista = produtosAtuais) {
         pontosAvaliacao +
         pontosTaxa +
         pontosDesconto;
+
 
     return Math.min(
         Math.max(score, 0),
