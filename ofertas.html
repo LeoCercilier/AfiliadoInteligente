@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ofertas selecionadas na Shopee. Confira produtos com bom custo-benefício.">
+    <meta name="description" content="Ofertas selecionadas na Shopee. Confira produtos com bom custo-beneficio.">
     <meta name="robots" content="index, follow">
     <title>Ofertas - Afiliado Inteligente</title>
 
@@ -12,9 +12,7 @@
 
     <style>
         * { box-sizing: border-box; }
-
         html { scroll-behavior: smooth; }
-
         body {
             margin: 0;
             min-height: 100vh;
@@ -23,7 +21,6 @@
             color: #e5e7eb;
             line-height: 1.45;
         }
-
         .topbar {
             position: sticky;
             top: 0;
@@ -33,7 +30,6 @@
             border-bottom: 1px solid #1e293b;
             padding: 12px 16px;
         }
-
         .topbar-inner {
             max-width: 1100px;
             margin: 0 auto;
@@ -42,7 +38,6 @@
             justify-content: space-between;
             gap: 12px;
         }
-
         .brand {
             display: flex;
             align-items: center;
@@ -52,7 +47,6 @@
             text-decoration: none;
             font-size: 15px;
         }
-
         .brand-badge {
             width: 36px;
             height: 36px;
@@ -63,263 +57,84 @@
             justify-content: center;
             font-size: 18px;
         }
-
-        .topbar-note {
-            font-size: 12px;
-            color: #94a3b8;
-            text-align: right;
-        }
-
-        .wrap {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px 14px 48px;
-        }
-
-        .hero {
-            margin-bottom: 18px;
-        }
-
-        .hero h1 {
-            margin: 0 0 6px;
-            font-size: 1.55rem;
-            color: #f8fafc;
-        }
-
-        .hero p {
-            margin: 0;
-            color: #94a3b8;
-            font-size: 14px;
-        }
-
-        .search-box {
-            margin: 16px 0 8px;
-            display: flex;
-            gap: 8px;
-        }
-
+        .topbar-note { font-size: 12px; color: #94a3b8; text-align: right; }
+        .wrap { max-width: 1100px; margin: 0 auto; padding: 20px 14px 48px; }
+        .hero { margin-bottom: 18px; }
+        .hero h1 { margin: 0 0 6px; font-size: 1.55rem; color: #f8fafc; }
+        .hero p { margin: 0; color: #94a3b8; font-size: 14px; }
+        .search-box { margin: 16px 0 8px; display: flex; gap: 8px; }
         .search-box input {
-            flex: 1;
-            min-height: 48px;
-            border-radius: 12px;
-            border: 1px solid #334155;
-            background: #111827;
-            color: #f8fafc;
-            padding: 0 14px;
-            font-size: 15px;
+            flex: 1; min-height: 48px; border-radius: 12px; border: 1px solid #334155;
+            background: #111827; color: #f8fafc; padding: 0 14px; font-size: 15px;
         }
-
-        .search-box input::placeholder {
-            color: #64748b;
-        }
-
+        .search-box input::placeholder { color: #64748b; }
         .search-box button {
-            min-height: 48px;
-            min-width: 48px;
-            border: 0;
-            border-radius: 12px;
-            background: #7c3aed;
-            color: white;
-            font-weight: 700;
-            font-size: 15px;
-            padding: 0 16px;
-            cursor: pointer;
+            min-height: 48px; min-width: 48px; border: 0; border-radius: 12px;
+            background: #7c3aed; color: white; font-weight: 700; font-size: 15px;
+            padding: 0 16px; cursor: pointer;
         }
-
-        .status {
-            min-height: 22px;
-            margin: 8px 0 14px;
-            font-size: 13px;
-            color: #94a3b8;
-        }
-
+        .status { min-height: 22px; margin: 8px 0 14px; font-size: 13px; color: #94a3b8; }
         .status.error { color: #fca5a5; }
         .status.loading { color: #a5b4fc; }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-        }
-
-        @media (min-width: 700px) {
-            .grid {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-                gap: 16px;
-            }
-        }
-
-        @media (min-width: 1000px) {
-            .grid {
-                grid-template-columns: repeat(4, minmax(0, 1fr));
-            }
-        }
-
+        .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+        @media (min-width: 700px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; } }
+        @media (min-width: 1000px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
         .card {
-            background: #111827;
-            border: 1px solid #1e293b;
-            border-radius: 14px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-            transition: border-color 0.15s ease, transform 0.15s ease;
+            background: #111827; border: 1px solid #1e293b; border-radius: 14px;
+            overflow: hidden; display: flex; flex-direction: column; min-width: 0;
         }
-
-        .card:hover {
-            border-color: #334155;
-            transform: translateY(-2px);
-        }
-
         .card-image {
-            position: relative;
-            width: 100%;
-            height: 170px;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
+            position: relative; width: 100%; height: 170px; background: #fff;
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
         }
-
-        .card-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: block;
-        }
-
-        .card-image .placeholder {
-            font-size: 40px;
-            color: #94a3b8;
-        }
-
+        .card-image img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        .card-image .placeholder { font-size: 40px; color: #94a3b8; }
         .discount {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            background: #dc2626;
-            color: white;
-            font-size: 11px;
-            font-weight: 800;
-            padding: 4px 7px;
-            border-radius: 7px;
+            position: absolute; top: 8px; left: 8px; background: #dc2626; color: white;
+            font-size: 11px; font-weight: 800; padding: 4px 7px; border-radius: 7px;
         }
-
-        .card-body {
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            gap: 6px;
-        }
-
+        .card-body { padding: 12px; display: flex; flex-direction: column; flex: 1; gap: 6px; }
         .card-name {
-            font-size: 13px;
-            font-weight: 700;
-            color: #f8fafc;
-            line-height: 1.35;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            min-height: 2.7em;
+            font-size: 13px; font-weight: 700; color: #f8fafc; line-height: 1.35;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+            overflow: hidden; min-height: 2.7em;
         }
-
-        .card-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            font-size: 12px;
-            color: #94a3b8;
+        .card-meta { display: flex; flex-wrap: wrap; gap: 8px; font-size: 12px; color: #94a3b8; }
+        .card-meta strong { color: #e2e8f0; font-weight: 700; }
+        .card-price { font-size: 18px; font-weight: 800; color: #4ade80; margin-top: 2px; }
+        .card-actions {
+            margin-top: auto; display: grid; grid-template-columns: 1fr auto;
+            gap: 8px; align-items: stretch;
         }
-
-        .card-meta strong {
-            color: #e2e8f0;
-            font-weight: 700;
-        }
-
-        .card-price {
-            font-size: 18px;
-            font-weight: 800;
-            color: #4ade80;
-            margin-top: 2px;
-        }
-
         .btn-shopee {
-            margin-top: auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            min-height: 44px;
-            border-radius: 10px;
-            border: 0;
-            background: #ee4d2d;
-            color: white;
-            font-weight: 800;
-            font-size: 13px;
-            text-decoration: none;
-            cursor: pointer;
-            width: 100%;
-            padding: 10px 12px;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            min-height: 44px; border-radius: 10px; border: 0; background: #ee4d2d;
+            color: white; font-weight: 800; font-size: 13px; text-decoration: none;
+            cursor: pointer; padding: 10px 12px;
         }
-
-        .btn-shopee:hover {
-            filter: brightness(1.05);
+        .btn-shopee:hover { filter: brightness(1.05); }
+        .btn-shopee[disabled], .btn-shopee.is-disabled { opacity: 0.45; pointer-events: none; }
+        .btn-share {
+            display: flex; align-items: center; justify-content: center;
+            min-height: 44px; min-width: 48px; padding: 10px 12px; border-radius: 10px;
+            border: 1px solid #334155; background: #1e293b; color: #e5e7eb;
+            font-weight: 800; font-size: 13px; cursor: pointer; white-space: nowrap;
         }
-
-        .btn-shopee[disabled],
-        .btn-shopee.is-disabled {
-            opacity: 0.45;
-            pointer-events: none;
-        }
-
-        .load-more-wrap {
-            display: flex;
-            justify-content: center;
-            margin-top: 22px;
-        }
-
+        .btn-share:hover { background: #334155; }
+        .btn-share.copied { background: #14532d; border-color: #166534; color: #bbf7d0; }
+        .load-more-wrap { display: flex; justify-content: center; margin-top: 22px; }
         .btn-more {
-            min-height: 48px;
-            padding: 0 22px;
-            border-radius: 12px;
-            border: 1px solid #334155;
-            background: #1e293b;
-            color: #e5e7eb;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
+            min-height: 48px; padding: 0 22px; border-radius: 12px; border: 1px solid #334155;
+            background: #1e293b; color: #e5e7eb; font-weight: 700; font-size: 14px; cursor: pointer;
         }
-
-        .btn-more:disabled {
-            opacity: 0.5;
-            cursor: default;
-        }
-
+        .btn-more:disabled { opacity: 0.5; cursor: default; }
         .empty {
-            text-align: center;
-            padding: 40px 16px;
-            border: 1px dashed #334155;
-            border-radius: 14px;
-            color: #94a3b8;
-            display: none;
+            text-align: center; padding: 40px 16px; border: 1px dashed #334155;
+            border-radius: 14px; color: #94a3b8; display: none;
         }
-
         .empty.show { display: block; }
-
-        .footer {
-            margin-top: 28px;
-            text-align: center;
-            font-size: 12px;
-            color: #64748b;
-        }
-
-        .footer a {
-            color: #a78bfa;
-            text-decoration: none;
-        }
+        .footer { margin-top: 28px; text-align: center; font-size: 12px; color: #64748b; }
+        .footer a { color: #a78bfa; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -329,25 +144,18 @@
                 <span class="brand-badge">🛍️</span>
                 <span>Ofertas selecionadas</span>
             </a>
-            <div class="topbar-note">
-                Links de afiliado · Shopee
-            </div>
+            <div class="topbar-note">Links de afiliado · Shopee</div>
         </div>
     </header>
 
     <main class="wrap">
         <section class="hero">
             <h1>🔥 Achadinhos e ofertas</h1>
-            <p>Produtos selecionados para você conferir direto na Shopee.</p>
+            <p>Produtos selecionados para voce conferir direto na Shopee.</p>
         </section>
 
         <div class="search-box">
-            <input
-                id="busca"
-                type="search"
-                placeholder="Buscar produto (ex.: fone, touca, cozinha...)"
-                autocomplete="off"
-            >
+            <input id="busca" type="search" placeholder="Buscar produto (ex.: fone, touca, cozinha...)" autocomplete="off">
             <button type="button" id="btnBuscar" aria-label="Buscar">🔎</button>
         </div>
 
@@ -362,9 +170,7 @@
         <div class="grid" id="grid"></div>
 
         <div class="load-more-wrap">
-            <button type="button" class="btn-more" id="btnMais" style="display:none">
-                Carregar mais
-            </button>
+            <button type="button" class="btn-more" id="btnMais" style="display:none">Carregar mais</button>
         </div>
 
         <div class="footer">
@@ -377,7 +183,7 @@
 (function () {
     "use strict";
 
-    const estado = {
+    var estado = {
         pagina: 1,
         limite: 20,
         keyword: "",
@@ -386,7 +192,7 @@
         produtos: []
     };
 
-    const el = {
+    var el = {
         grid: document.getElementById("grid"),
         status: document.getElementById("status"),
         vazio: document.getElementById("vazio"),
@@ -397,21 +203,18 @@
 
     function numero(valor) {
         if (valor === null || valor === undefined || valor === "") return null;
-        const n = Number(valor);
+        var n = Number(valor);
         return Number.isFinite(n) ? n : null;
     }
 
     function moeda(valor) {
-        const n = numero(valor);
-        if (n === null) return "Confira o preço";
-        return n.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL"
-        });
+        var n = numero(valor);
+        if (n === null) return "Confira o preco";
+        return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
     }
 
     function formatarNumero(valor) {
-        const n = numero(valor);
+        var n = numero(valor);
         if (n === null) return null;
         return n.toLocaleString("pt-BR");
     }
@@ -430,10 +233,10 @@
         return {
             nome: produto.nome || produto.productName || "Produto",
             imagem_url: produto.imagem_url || produto.imageUrl || "",
-            preco: produto.preco ?? produto.priceMin ?? produto.preco_min ?? null,
-            vendas: produto.vendas ?? produto.sales ?? null,
-            avaliacao: produto.avaliacao ?? produto.ratingStar ?? null,
-            desconto: produto.desconto_percentual ?? produto.priceDiscountRate ?? null,
+            preco: produto.preco != null ? produto.preco : (produto.priceMin != null ? produto.priceMin : produto.preco_min),
+            vendas: produto.vendas != null ? produto.vendas : produto.sales,
+            avaliacao: produto.avaliacao != null ? produto.avaliacao : produto.ratingStar,
+            desconto: produto.desconto_percentual != null ? produto.desconto_percentual : produto.priceDiscountRate,
             link: produto.offer_link || produto.offerLink || produto.produto_link || produto.productLink || ""
         };
     }
@@ -443,19 +246,70 @@
         el.status.className = "status" + (tipo ? " " + tipo : "");
     }
 
+    async function compartilharProduto(produto, botao) {
+        var nome = produto.nome || "Produto";
+        var precoTxt = moeda(produto.preco);
+        var link = produto.link || "";
+        var texto =
+            "🔥 Olha esse achadinho na Shopee!\n\n" +
+            nome + "\n" +
+            "💰 " + precoTxt + "\n\n" +
+            "👇 Confira:\n" +
+            link;
+
+        try {
+            if (navigator.share) {
+                await navigator.share({ title: nome, text: texto, url: link });
+                return;
+            }
+        } catch (err) {
+            if (err && err.name === "AbortError") return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(texto);
+            var original = botao.textContent;
+            botao.textContent = "✅";
+            botao.classList.add("copied");
+            setTimeout(function () {
+                botao.textContent = original;
+                botao.classList.remove("copied");
+            }, 1800);
+        } catch (e) {
+            var ta = document.createElement("textarea");
+            ta.value = texto;
+            ta.style.position = "fixed";
+            ta.style.left = "-9999px";
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand("copy");
+                botao.textContent = "✅";
+                botao.classList.add("copied");
+                setTimeout(function () {
+                    botao.textContent = "📤";
+                    botao.classList.remove("copied");
+                }, 1800);
+            } catch (e2) {
+                alert("Copie o link:\n\n" + link);
+            }
+            ta.remove();
+        }
+    }
+
     function criarCard(produto) {
-        const card = document.createElement("article");
+        var card = document.createElement("article");
         card.className = "card";
 
-        const nome = produto.nome;
-        const img = produto.imagem_url;
-        const preco = moeda(produto.preco);
-        const link = produto.link;
-        const av = numero(produto.avaliacao);
-        const vendas = formatarNumero(produto.vendas);
-        const desconto = numero(produto.desconto);
+        var nome = produto.nome;
+        var img = produto.imagem_url;
+        var preco = moeda(produto.preco);
+        var link = produto.link;
+        var av = numero(produto.avaliacao);
+        var vendas = formatarNumero(produto.vendas);
+        var desconto = numero(produto.desconto);
 
-        let imgHtml;
+        var imgHtml;
         if (img) {
             imgHtml =
                 '<img src="' + escapar(img) + '" alt="' + escapar(nome) + '" loading="lazy" ' +
@@ -465,12 +319,12 @@
             imgHtml = '<div class="placeholder">📦</div>';
         }
 
-        const descontoHtml =
+        var descontoHtml =
             desconto !== null && desconto > 0
                 ? '<div class="discount">-' + Math.round(desconto) + "%</div>"
                 : "";
 
-        const metaParts = [];
+        var metaParts = [];
         if (av !== null) {
             metaParts.push("⭐ <strong>" + av.toLocaleString("pt-BR", {
                 minimumFractionDigits: 1,
@@ -481,37 +335,46 @@
             metaParts.push("🛒 <strong>" + vendas + "</strong>");
         }
 
+        var shopeeBtn = link
+            ? '<a class="btn-shopee" href="' + escapar(link) + '" target="_blank" rel="noopener noreferrer sponsored">🛍️ Ver na Shopee</a>'
+            : '<button type="button" class="btn-shopee is-disabled" disabled>Indisponivel</button>';
+
+        var shareBtn = link
+            ? '<button type="button" class="btn-share" aria-label="Compartilhar produto">📤</button>'
+            : "";
+
         card.innerHTML =
             '<div class="card-image">' + imgHtml + descontoHtml + "</div>" +
             '<div class="card-body">' +
             '<div class="card-name">' + escapar(nome) + "</div>" +
             (metaParts.length ? '<div class="card-meta">' + metaParts.join("") + "</div>" : "") +
             '<div class="card-price">' + escapar(preco) + "</div>" +
-            (link
-                ? '<a class="btn-shopee" href="' + escapar(link) + '" target="_blank" rel="noopener noreferrer sponsored">🛍️ Ver na Shopee</a>'
-                : '<button type="button" class="btn-shopee is-disabled" disabled>Indisponível</button>') +
+            '<div class="card-actions">' + shopeeBtn + shareBtn + "</div>" +
             "</div>";
+
+        if (link) {
+            var btnShare = card.querySelector(".btn-share");
+            if (btnShare) {
+                btnShare.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    compartilharProduto(produto, btnShare);
+                });
+            }
+        }
 
         return card;
     }
 
     function renderizar(acumular) {
-        if (!acumular) {
-            el.grid.innerHTML = "";
-        }
-
-        const fragment = document.createDocumentFragment();
-        const inicio = acumular ? el.grid.children.length : 0;
-
-        for (let i = inicio; i < estado.produtos.length; i++) {
+        if (!acumular) el.grid.innerHTML = "";
+        var fragment = document.createDocumentFragment();
+        var inicio = acumular ? el.grid.children.length : 0;
+        for (var i = inicio; i < estado.produtos.length; i++) {
             fragment.appendChild(criarCard(estado.produtos[i]));
         }
-
         el.grid.appendChild(fragment);
-
-        const vazio = estado.produtos.length === 0;
-        el.vazio.classList.toggle("show", vazio);
-
+        el.vazio.classList.toggle("show", estado.produtos.length === 0);
         el.btnMais.style.display = estado.hasNext ? "inline-flex" : "none";
         el.btnMais.disabled = estado.carregando;
     }
@@ -524,7 +387,7 @@
         return [];
     }
 
-    function extrairHasNext(data, pagina) {
+    function extrairHasNext(data) {
         if (!data || typeof data !== "object") return false;
         if (data.hasNextPage) return true;
         if (data.pageInfo && data.pageInfo.hasNextPage) return true;
@@ -536,7 +399,7 @@
         if (estado.carregando) return;
 
         if (typeof supabaseClient === "undefined") {
-            setStatus("❌ Configuração indisponível no momento.", "error");
+            setStatus("Configuracao indisponivel no momento.", "error");
             return;
         }
 
@@ -545,11 +408,11 @@
         el.btnMais.disabled = true;
         setStatus("Carregando ofertas...", "loading");
 
-        const pagina = Number(opcoes.pagina || estado.pagina || 1);
-        const acumular = Boolean(opcoes.acumular);
+        var pagina = Number(opcoes.pagina || estado.pagina || 1);
+        var acumular = Boolean(opcoes.acumular);
 
         try {
-            const resultado = await supabaseClient.functions.invoke("shopee-products-v2", {
+            var resultado = await supabaseClient.functions.invoke("shopee-products-v2", {
                 body: {
                     page: pagina,
                     limit: estado.limite,
@@ -558,29 +421,24 @@
             });
 
             if (resultado.error) {
-                let mensagem = resultado.error.message || "Erro ao carregar ofertas.";
+                var mensagem = resultado.error.message || "Erro ao carregar ofertas.";
                 try {
                     if (resultado.error.context && typeof resultado.error.context.json === "function") {
-                        const corpo = await resultado.error.context.json();
+                        var corpo = await resultado.error.context.json();
                         mensagem = corpo.message || corpo.error || mensagem;
                     }
                 } catch (e) {}
                 throw new Error(mensagem);
             }
 
-            const data = resultado.data;
-            const lista = extrairLista(data)
+            var data = resultado.data;
+            var lista = extrairLista(data)
                 .map(normalizarProduto)
                 .filter(function (p) { return p && p.nome; });
 
             estado.pagina = pagina;
-            estado.hasNext = extrairHasNext(data, pagina);
-
-            if (acumular) {
-                estado.produtos = estado.produtos.concat(lista);
-            } else {
-                estado.produtos = lista;
-            }
+            estado.hasNext = extrairHasNext(data);
+            estado.produtos = acumular ? estado.produtos.concat(lista) : lista;
 
             renderizar(acumular);
 
@@ -590,23 +448,17 @@
                 setStatus(
                     estado.produtos.length +
                     " oferta" + (estado.produtos.length === 1 ? "" : "s") +
-                    (estado.keyword ? " para “" + estado.keyword + "”" : "")
+                    (estado.keyword ? " para \"" + estado.keyword + "\"" : "")
                 );
             }
         } catch (erro) {
             console.error(erro);
-            const msg = (erro && erro.message) ? erro.message : "Não foi possível carregar as ofertas.";
-
-            // Mensagens amigáveis para visitante
+            var msg = (erro && erro.message) ? erro.message : "Nao foi possivel carregar as ofertas.";
             if (/JWT|auth|session|login|Unauthorized|401|403/i.test(msg)) {
-                setStatus(
-                    "⚠️ As ofertas públicas estão temporariamente indisponíveis. Tente novamente em instantes.",
-                    "error"
-                );
+                setStatus("As ofertas publicas estao temporariamente indisponiveis. Tente novamente em instantes.", "error");
             } else {
-                setStatus("❌ " + msg, "error");
+                setStatus(msg, "error");
             }
-
             if (!acumular) {
                 estado.produtos = [];
                 renderizar(false);
@@ -635,13 +487,9 @@
 
     el.btnMais.addEventListener("click", function () {
         if (!estado.hasNext || estado.carregando) return;
-        buscar({
-            pagina: estado.pagina + 1,
-            acumular: true
-        });
+        buscar({ pagina: estado.pagina + 1, acumular: true });
     });
 
-    // Inicia sem login
     buscar({ pagina: 1, acumular: false });
 })();
 </script>
