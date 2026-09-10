@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Ofertas selecionadas na Shopee">
+<title>Ofertas - Afiliado Inteligente</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,sans-serif;background:#0b1220;color:#e5e7eb}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(11,18,32,.95);border-bottom:1px solid #1e293b;padding:12px 16px}
+.topbar-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;color:#f8fafc;text-decoration:none}
+.badge{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#2563eb);display:flex;align-items:center;justify-content:center}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 14px 48px}
+.hero h1{margin:0 0 6px;font-size:1.5rem}.hero p{margin:0;color:#94a3b8;font-size:14px}
+.search{display:flex;gap:8px;margin:16px 0 8px}
+.search input{flex:1;min-height:48px;border-radius:12px;border:1px solid #334155;background:#111827;color:#fff;padding:0 14px;font-size:15px}
+.search button{min-height:48px;border:0;border-radius:12px;background:#7c3aed;color:#fff;font-weight:700;padding:0 16px;cursor:pointer}
+.status{min-height:22px;margin:8px 0 14px;font-size:13px;color:#94a3b8}.status.err{color:#fca5a5}.status.load{color:#a5b4fc}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media(min-width:700px){.grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}}
+@media(min-width:1000px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.card{background:#111827;border:1px solid #1e293b;border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.img{height:170px;background:#fff;display:flex;align-items:center;justify-content:center;position:relative}
+.img img{width:100%;height:100%;object-fit:contain}
+.disc{position:absolute;top:8px;left:8px;background:#dc2626;color:#fff;font-size:11px;font-weight:800;padding:4px 7px;border-radius:7px}
+.body{padding:12px;display:flex;flex-direction:column;flex:1;gap:6px}
+.name{font-size:13px;font-weight:700;color:#f8fafc;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.7em}
+.meta{font-size:12px;color:#94a3b8;display:flex;gap:8px;flex-wrap:wrap}.meta strong{color:#e2e8f0}
+.price{font-size:18px;font-weight:800;color:#4ade80}
+.btn{margin-top:auto;display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:10px;background:#ee4d2d;color:#fff;font-weight:800;font-size:13px;text-decoration:none;border:0;width:100%;cursor:pointer}
+.btn.off{opacity:.45;pointer-events:none}
+.more-wrap{display:flex;justify-content:center;margin-top:22px}
+.more{min-height:48px;padding:0 22px;border-radius:12px;border:1px solid #334155;background:#1e293b;color:#e5e7eb;font-weight:700;cursor:pointer}
+.empty{text-align:center;padding:40px 16px;border:1px dashed #334155;border-radius:14px;color:#94a3b8;display:none}.empty.on{display:block}
+.foot{margin-top:28px;text-align:center;font-size:12px;color:#64748b}.foot a{color:#a78bfa}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-inner">
+<a class="brand" href="ofertas.html"><span class="badge">🛍️</span><span>Ofertas selecionadas</span></a>
+<span style="font-size:12px;color:#94a3b8">Links de afiliado · Shopee</span>
+</div></header>
+<main class="wrap">
+<section class="hero"><h1>🔥 Achadinhos e ofertas</h1><p>Produtos selecionados para voce conferir direto na Shopee.</p></section>
+<div class="search"><input id="busca" type="search" placeholder="Buscar produto..."><button type="button" id="btnBuscar">🔎</button></div>
+<div class="status" id="status"></div>
+<div class="empty" id="vazio"><div style="font-size:36px">📦</div><div><strong style="color:#e5e7eb">Nenhum produto encontrado</strong></div></div>
+<div class="grid" id="grid"></div>
+<div class="more-wrap"><button type="button" class="more" id="btnMais" style="display:none">Carregar mais</button></div>
+<div class="foot">Ofertas via afiliados · <a href="./" rel="noopener">Afiliado Inteligente</a></div>
+</main>
+<script>
+(function(){
+var S={pagina:1,limite:20,keyword:"",hasNext:false,carregando:false,produtos:[]};
+var E={grid:document.getElementById("grid"),status:document.getElementById("status"),vazio:document.getElementById("vazio"),busca:document.getElementById("busca"),btnBuscar:document.getElementById("btnBuscar"),btnMais:document.getElementById("btnMais")};
+function num(v){if(v==null||v==="")return null;var n=Number(v);return Number.isFinite(n)?n:null}
+function moeda(v){var n=num(v);if(n==null)return"Confira o preco";return n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
+function fmt(v){var n=num(v);return n==null?null:n.toLocaleString("pt-BR")}
+function esc(t){return String(t||"").replace(/&/g,"&"+"amp;").replace(/</g,"&"+"lt;").replace(/>/g,"&"+"gt;").replace(/"/g,"&"+"quot;")}
+function norm(p){if(!p||typeof p!=="object")return null;return{nome:p.nome||p.productName||"Produto",img:p.imagem_url||p.imageUrl||"",preco:p.preco!=null?p.preco:(p.priceMin!=null?p.priceMin:p.preco_min),vendas:p.vendas!=null?p.vendas:p.sales,av:p.avaliacao!=null?p.avaliacao:p.ratingStar,desc:p.desconto_percentual!=null?p.desconto_percentual:p.priceDiscountRate,link:p.offer_link||p.offerLink||p.produto_link||p.productLink||""}}
+function status(m,t){E.status.textContent=m||"";E.status.className="status"+(t?" "+t:"")}
+function card(p){var c=document.createElement("article");c.className="card";var imgH=p.img?'<img src="'+esc(p.img)+'" alt="'+esc(p.nome)+'" loading="lazy" onerror="this.style.display=\'none\'">':'<div style="font-size:40px">📦</div>';var d=num(p.desc);var dH=(d!=null&&d>0)?'<div class="disc">-'+Math.round(d)+'%</div>':'';var av=num(p.av);var vd=fmt(p.vendas);var meta='';if(av!=null)meta+='⭐ <strong>'+av.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:2})+'</strong> ';if(vd)meta+='🛒 <strong>'+vd+'</strong>';c.innerHTML='<div class="img">'+imgH+dH+'</div><div class="body"><div class="name">'+esc(p.nome)+'</div>'+(meta?'<div class="meta">'+meta+'</div>':'')+'<div class="price">'+esc(moeda(p.preco))+'</div>'+(p.link?'<a class="btn" href="'+esc(p.link)+'" target="_blank" rel="noopener noreferrer sponsored">🛍️ Ver na Shopee</a>':'<button class="btn off" disabled>Indisponivel</button>')+'</div>';return c}
+function render(acc){if(!acc)E.grid.innerHTML="";var f=document.createDocumentFragment();var i0=acc?E.grid.children.length:0;for(var i=i0;i<S.produtos.length;i++)f.appendChild(card(S.produtos[i]));E.grid.appendChild(f);E.vazio.classList.toggle("on",S.produtos.length===0);E.btnMais.style.display=S.hasNext?"inline-flex":"none"}
+function lista(d){if(Array.isArray(d))return d;if(d&&Array.isArray(d.products))return d.products;if(d&&Array.isArray(d.produtos))return d.produtos;if(d&&Array.isArray(d.data))return d.data;return[]}
+function hasNext(d){return !!(d&&(d.hasNextPage||(d.pageInfo&&d.pageInfo.hasNextPage)))}
+async function buscar(o){o=o||{};if(S.carregando)return;if(typeof supabaseClient==="undefined"){status("Configuracao indisponivel.","err");return}S.carregando=true;E.btnBuscar.disabled=true;E.btnMais.disabled=true;status("Carregando ofertas...","load");var page=Number(o.pagina||S.pagina||1);var acc=!!o.acumular;try{var r=await supabaseClient.functions.invoke("shopee-products-v2",{body:{page:page,limit:S.limite,keyword:S.keyword||""}});if(r.error){var m=r.error.message||"Erro ao carregar";try{if(r.error.context&&typeof r.error.context.json==="function"){var b=await r.error.context.json();m=b.message||b.error||m}}catch(e){}throw new Error(m)}var L=lista(r.data).map(norm).filter(function(p){return p&&p.nome});S.pagina=page;S.hasNext=hasNext(r.data);S.produtos=acc?S.produtos.concat(L):L;render(acc);status(L.length===0&&!acc?"Nenhuma oferta encontrada.":(S.produtos.length+" oferta"+(S.produtos.length===1?"":"s")+(S.keyword?" para \""+S.keyword+"\"":"")))}catch(err){console.error(err);var msg=err&&err.message?err.message:"Falha ao carregar";if(/JWT|auth|session|login|Unauthorized|401|403/i.test(msg))status("Ofertas publicas temporariamente indisponiveis.","err");else status(msg,"err");if(!acc){S.produtos=[];render(false)}}finally{S.carregando=false;E.btnBuscar.disabled=false;E.btnMais.disabled=false}}
+function go(){S.keyword=(E.busca.value||"").trim();S.pagina=1;buscar({pagina:1,acumular:false})}
+E.btnBuscar.addEventListener("click",go);
+E.busca.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();go()}});
+E.btnMais.addEventListener("click",function(){if(!S.hasNext||S.carregando)return;buscar({pagina:S.pagina+1,acumular:true})});
+buscar({pagina:1,acumular:false});
+})();
+</script>
+</body>
+</html>
