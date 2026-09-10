@@ -1,496 +1,81 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ofertas selecionadas na Shopee. Confira produtos com bom custo-beneficio.">
-    <meta name="robots" content="index, follow">
-    <title>Ofertas - Afiliado Inteligente</title>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-config.js"></script>
-
-    <style>
-        * { box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-            background: #0b1220;
-            color: #e5e7eb;
-            line-height: 1.45;
-        }
-        .topbar {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            background: rgba(11, 18, 32, 0.92);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #1e293b;
-            padding: 12px 16px;
-        }
-        .topbar-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 800;
-            color: #f8fafc;
-            text-decoration: none;
-            font-size: 15px;
-        }
-        .brand-badge {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #7c3aed, #2563eb);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-        .topbar-note { font-size: 12px; color: #94a3b8; text-align: right; }
-        .wrap { max-width: 1100px; margin: 0 auto; padding: 20px 14px 48px; }
-        .hero { margin-bottom: 18px; }
-        .hero h1 { margin: 0 0 6px; font-size: 1.55rem; color: #f8fafc; }
-        .hero p { margin: 0; color: #94a3b8; font-size: 14px; }
-        .search-box { margin: 16px 0 8px; display: flex; gap: 8px; }
-        .search-box input {
-            flex: 1; min-height: 48px; border-radius: 12px; border: 1px solid #334155;
-            background: #111827; color: #f8fafc; padding: 0 14px; font-size: 15px;
-        }
-        .search-box input::placeholder { color: #64748b; }
-        .search-box button {
-            min-height: 48px; min-width: 48px; border: 0; border-radius: 12px;
-            background: #7c3aed; color: white; font-weight: 700; font-size: 15px;
-            padding: 0 16px; cursor: pointer;
-        }
-        .status { min-height: 22px; margin: 8px 0 14px; font-size: 13px; color: #94a3b8; }
-        .status.error { color: #fca5a5; }
-        .status.loading { color: #a5b4fc; }
-        .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-        @media (min-width: 700px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; } }
-        @media (min-width: 1000px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-        .card {
-            background: #111827; border: 1px solid #1e293b; border-radius: 14px;
-            overflow: hidden; display: flex; flex-direction: column; min-width: 0;
-        }
-        .card-image {
-            position: relative; width: 100%; height: 170px; background: #fff;
-            display: flex; align-items: center; justify-content: center; overflow: hidden;
-        }
-        .card-image img { width: 100%; height: 100%; object-fit: contain; display: block; }
-        .card-image .placeholder { font-size: 40px; color: #94a3b8; }
-        .discount {
-            position: absolute; top: 8px; left: 8px; background: #dc2626; color: white;
-            font-size: 11px; font-weight: 800; padding: 4px 7px; border-radius: 7px;
-        }
-        .card-body { padding: 12px; display: flex; flex-direction: column; flex: 1; gap: 6px; }
-        .card-name {
-            font-size: 13px; font-weight: 700; color: #f8fafc; line-height: 1.35;
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-            overflow: hidden; min-height: 2.7em;
-        }
-        .card-meta { display: flex; flex-wrap: wrap; gap: 8px; font-size: 12px; color: #94a3b8; }
-        .card-meta strong { color: #e2e8f0; font-weight: 700; }
-        .card-price { font-size: 18px; font-weight: 800; color: #4ade80; margin-top: 2px; }
-        .card-actions {
-            margin-top: auto; display: grid; grid-template-columns: 1fr auto;
-            gap: 8px; align-items: stretch;
-        }
-        .btn-shopee {
-            display: flex; align-items: center; justify-content: center; gap: 6px;
-            min-height: 44px; border-radius: 10px; border: 0; background: #ee4d2d;
-            color: white; font-weight: 800; font-size: 13px; text-decoration: none;
-            cursor: pointer; padding: 10px 12px;
-        }
-        .btn-shopee:hover { filter: brightness(1.05); }
-        .btn-shopee[disabled], .btn-shopee.is-disabled { opacity: 0.45; pointer-events: none; }
-        .btn-share {
-            display: flex; align-items: center; justify-content: center;
-            min-height: 44px; min-width: 48px; padding: 10px 12px; border-radius: 10px;
-            border: 1px solid #334155; background: #1e293b; color: #e5e7eb;
-            font-weight: 800; font-size: 13px; cursor: pointer; white-space: nowrap;
-        }
-        .btn-share:hover { background: #334155; }
-        .btn-share.copied { background: #14532d; border-color: #166534; color: #bbf7d0; }
-        .load-more-wrap { display: flex; justify-content: center; margin-top: 22px; }
-        .btn-more {
-            min-height: 48px; padding: 0 22px; border-radius: 12px; border: 1px solid #334155;
-            background: #1e293b; color: #e5e7eb; font-weight: 700; font-size: 14px; cursor: pointer;
-        }
-        .btn-more:disabled { opacity: 0.5; cursor: default; }
-        .empty {
-            text-align: center; padding: 40px 16px; border: 1px dashed #334155;
-            border-radius: 14px; color: #94a3b8; display: none;
-        }
-        .empty.show { display: block; }
-        .footer { margin-top: 28px; text-align: center; font-size: 12px; color: #64748b; }
-        .footer a { color: #a78bfa; text-decoration: none; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Ofertas selecionadas na Shopee">
+<title>Ofertas - Afiliado Inteligente</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,sans-serif;background:#0b1220;color:#e5e7eb}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(11,18,32,.92);border-bottom:1px solid #1e293b;padding:12px 16px}
+.topbar-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;color:#f8fafc;text-decoration:none;font-size:15px}
+.brand-badge{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#2563eb);display:flex;align-items:center;justify-content:center;font-size:18px}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 14px 48px}
+.hero h1{margin:0 0 6px;font-size:1.55rem}.hero p{margin:0;color:#94a3b8;font-size:14px}
+.search-box{margin:16px 0 8px;display:flex;gap:8px}
+.search-box input{flex:1;min-height:48px;border-radius:12px;border:1px solid #334155;background:#111827;color:#f8fafc;padding:0 14px;font-size:15px}
+.search-box button{min-height:48px;border:0;border-radius:12px;background:#7c3aed;color:#fff;font-weight:700;padding:0 16px;cursor:pointer}
+.status{min-height:22px;margin:8px 0 14px;font-size:13px;color:#94a3b8}.status.error{color:#fca5a5}.status.loading{color:#a5b4fc}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media(min-width:700px){.grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}}
+@media(min-width:1000px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.card{background:#111827;border:1px solid #1e293b;border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.card-image{position:relative;height:170px;background:#fff;display:flex;align-items:center;justify-content:center}
+.card-image img{width:100%;height:100%;object-fit:contain}
+.discount{position:absolute;top:8px;left:8px;background:#dc2626;color:#fff;font-size:11px;font-weight:800;padding:4px 7px;border-radius:7px}
+.card-body{padding:12px;display:flex;flex-direction:column;flex:1;gap:6px}
+.card-name{font-size:13px;font-weight:700;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.7em}
+.card-meta{display:flex;flex-wrap:wrap;gap:8px;font-size:12px;color:#94a3b8}.card-meta strong{color:#e2e8f0}
+.card-price{font-size:18px;font-weight:800;color:#4ade80}
+.card-actions{margin-top:auto;display:grid;grid-template-columns:1fr auto;gap:8px}
+.btn-shopee{display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:10px;border:0;background:#ee4d2d;color:#fff;font-weight:800;font-size:13px;text-decoration:none;padding:10px 12px}
+.btn-share{display:flex;align-items:center;justify-content:center;min-height:44px;min-width:48px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#e5e7eb;font-weight:800;cursor:pointer}
+.btn-share.copied{background:#14532d;border-color:#166534;color:#bbf7d0}
+.btn-more{min-height:48px;padding:0 22px;border-radius:12px;border:1px solid #334155;background:#1e293b;color:#e5e7eb;font-weight:700;cursor:pointer;display:none;margin:22px auto}
+.empty{text-align:center;padding:40px 16px;border:1px dashed #334155;border-radius:14px;color:#94a3b8;display:none}.empty.show{display:block}
+.footer{margin-top:28px;text-align:center;font-size:12px;color:#64748b}.footer a{color:#a78bfa}
+</style>
 </head>
 <body>
-    <header class="topbar">
-        <div class="topbar-inner">
-            <a class="brand" href="ofertas.html">
-                <span class="brand-badge">🛍️</span>
-                <span>Ofertas selecionadas</span>
-            </a>
-            <div class="topbar-note">Links de afiliado · Shopee</div>
-        </div>
-    </header>
-
-    <main class="wrap">
-        <section class="hero">
-            <h1>🔥 Achadinhos e ofertas</h1>
-            <p>Produtos selecionados para voce conferir direto na Shopee.</p>
-        </section>
-
-        <div class="search-box">
-            <input id="busca" type="search" placeholder="Buscar produto (ex.: fone, touca, cozinha...)" autocomplete="off">
-            <button type="button" id="btnBuscar" aria-label="Buscar">🔎</button>
-        </div>
-
-        <div class="status" id="status"></div>
-
-        <div class="empty" id="vazio">
-            <div style="font-size: 36px; margin-bottom: 8px;">📦</div>
-            <div><strong style="color:#e5e7eb">Nenhum produto encontrado</strong></div>
-            <div>Tente outro termo de busca.</div>
-        </div>
-
-        <div class="grid" id="grid"></div>
-
-        <div class="load-more-wrap">
-            <button type="button" class="btn-more" id="btnMais" style="display:none">Carregar mais</button>
-        </div>
-
-        <div class="footer">
-            Ofertas via afiliados ·
-            <a href="https://leocercilier.github.io/AfiliadoInteligente/" rel="noopener">Afiliado Inteligente</a>
-        </div>
-    </main>
-
+<header class="topbar"><div class="topbar-inner">
+<a class="brand" href="ofertas.html"><span class="brand-badge">🛍️</span><span>Ofertas selecionadas</span></a>
+<span style="font-size:12px;color:#94a3b8">Links de afiliado · Shopee</span>
+</div></header>
+<main class="wrap">
+<section class="hero"><h1>🔥 Achadinhos e ofertas</h1><p>Produtos selecionados para voce conferir direto na Shopee.</p></section>
+<div class="search-box"><input id="busca" type="search" placeholder="Buscar produto..."><button type="button" id="btnBuscar">🔎</button></div>
+<div class="status" id="status"></div>
+<div class="empty" id="vazio"><div style="font-size:36px">📦</div><div><strong style="color:#e5e7eb">Nenhum produto encontrado</strong></div></div>
+<div class="grid" id="grid"></div>
+<button type="button" class="btn-more" id="btnMais">Carregar mais</button>
+<div class="footer">Ofertas via afiliados · <a href="./" rel="noopener">Afiliado Inteligente</a></div>
+</main>
 <script>
-(function () {
-    "use strict";
-
-    var estado = {
-        pagina: 1,
-        limite: 20,
-        keyword: "",
-        hasNext: false,
-        carregando: false,
-        produtos: []
-    };
-
-    var el = {
-        grid: document.getElementById("grid"),
-        status: document.getElementById("status"),
-        vazio: document.getElementById("vazio"),
-        busca: document.getElementById("busca"),
-        btnBuscar: document.getElementById("btnBuscar"),
-        btnMais: document.getElementById("btnMais")
-    };
-
-    function numero(valor) {
-        if (valor === null || valor === undefined || valor === "") return null;
-        var n = Number(valor);
-        return Number.isFinite(n) ? n : null;
-    }
-
-    function moeda(valor) {
-        var n = numero(valor);
-        if (n === null) return "Confira o preco";
-        return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-    }
-
-    function formatarNumero(valor) {
-        var n = numero(valor);
-        if (n === null) return null;
-        return n.toLocaleString("pt-BR");
-    }
-
-    function escapar(texto) {
-        return String(texto || "")
-            .replace(/&/g, "&" + "amp;")
-            .replace(/</g, "&" + "lt;")
-            .replace(/>/g, "&" + "gt;")
-            .replace(/"/g, "&" + "quot;")
-            .replace(/'/g, "&" + "#039;");
-    }
-
-    function normalizarProduto(produto) {
-        if (!produto || typeof produto !== "object") return null;
-        return {
-            nome: produto.nome || produto.productName || "Produto",
-            imagem_url: produto.imagem_url || produto.imageUrl || "",
-            preco: produto.preco != null ? produto.preco : (produto.priceMin != null ? produto.priceMin : produto.preco_min),
-            vendas: produto.vendas != null ? produto.vendas : produto.sales,
-            avaliacao: produto.avaliacao != null ? produto.avaliacao : produto.ratingStar,
-            desconto: produto.desconto_percentual != null ? produto.desconto_percentual : produto.priceDiscountRate,
-            link: produto.offer_link || produto.offerLink || produto.produto_link || produto.productLink || ""
-        };
-    }
-
-    function setStatus(msg, tipo) {
-        el.status.textContent = msg || "";
-        el.status.className = "status" + (tipo ? " " + tipo : "");
-    }
-
-    async function compartilharProduto(produto, botao) {
-        var nome = produto.nome || "Produto";
-        var precoTxt = moeda(produto.preco);
-        var link = produto.link || "";
-        var texto =
-            "🔥 Olha esse achadinho na Shopee!\n\n" +
-            nome + "\n" +
-            "💰 " + precoTxt + "\n\n" +
-            "👇 Confira:\n" +
-            link;
-
-        try {
-            if (navigator.share) {
-                await navigator.share({ title: nome, text: texto, url: link });
-                return;
-            }
-        } catch (err) {
-            if (err && err.name === "AbortError") return;
-        }
-
-        try {
-            await navigator.clipboard.writeText(texto);
-            var original = botao.textContent;
-            botao.textContent = "✅";
-            botao.classList.add("copied");
-            setTimeout(function () {
-                botao.textContent = original;
-                botao.classList.remove("copied");
-            }, 1800);
-        } catch (e) {
-            var ta = document.createElement("textarea");
-            ta.value = texto;
-            ta.style.position = "fixed";
-            ta.style.left = "-9999px";
-            document.body.appendChild(ta);
-            ta.select();
-            try {
-                document.execCommand("copy");
-                botao.textContent = "✅";
-                botao.classList.add("copied");
-                setTimeout(function () {
-                    botao.textContent = "📤";
-                    botao.classList.remove("copied");
-                }, 1800);
-            } catch (e2) {
-                alert("Copie o link:\n\n" + link);
-            }
-            ta.remove();
-        }
-    }
-
-    function criarCard(produto) {
-        var card = document.createElement("article");
-        card.className = "card";
-
-        var nome = produto.nome;
-        var img = produto.imagem_url;
-        var preco = moeda(produto.preco);
-        var link = produto.link;
-        var av = numero(produto.avaliacao);
-        var vendas = formatarNumero(produto.vendas);
-        var desconto = numero(produto.desconto);
-
-        var imgHtml;
-        if (img) {
-            imgHtml =
-                '<img src="' + escapar(img) + '" alt="' + escapar(nome) + '" loading="lazy" ' +
-                'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
-                '<div class="placeholder" style="display:none">📦</div>';
-        } else {
-            imgHtml = '<div class="placeholder">📦</div>';
-        }
-
-        var descontoHtml =
-            desconto !== null && desconto > 0
-                ? '<div class="discount">-' + Math.round(desconto) + "%</div>"
-                : "";
-
-        var metaParts = [];
-        if (av !== null) {
-            metaParts.push("⭐ <strong>" + av.toLocaleString("pt-BR", {
-                minimumFractionDigits: 1,
-                maximumFractionDigits: 2
-            }) + "</strong>");
-        }
-        if (vendas) {
-            metaParts.push("🛒 <strong>" + vendas + "</strong>");
-        }
-
-        var shopeeBtn = link
-            ? '<a class="btn-shopee" href="' + escapar(link) + '" target="_blank" rel="noopener noreferrer sponsored">🛍️ Ver na Shopee</a>'
-            : '<button type="button" class="btn-shopee is-disabled" disabled>Indisponivel</button>';
-
-        var shareBtn = link
-            ? '<button type="button" class="btn-share" aria-label="Compartilhar produto">📤</button>'
-            : "";
-
-        card.innerHTML =
-            '<div class="card-image">' + imgHtml + descontoHtml + "</div>" +
-            '<div class="card-body">' +
-            '<div class="card-name">' + escapar(nome) + "</div>" +
-            (metaParts.length ? '<div class="card-meta">' + metaParts.join("") + "</div>" : "") +
-            '<div class="card-price">' + escapar(preco) + "</div>" +
-            '<div class="card-actions">' + shopeeBtn + shareBtn + "</div>" +
-            "</div>";
-
-        if (link) {
-            var btnShare = card.querySelector(".btn-share");
-            if (btnShare) {
-                btnShare.addEventListener("click", function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    compartilharProduto(produto, btnShare);
-                });
-            }
-        }
-
-        return card;
-    }
-
-    function renderizar(acumular) {
-        if (!acumular) el.grid.innerHTML = "";
-        var fragment = document.createDocumentFragment();
-        var inicio = acumular ? el.grid.children.length : 0;
-        for (var i = inicio; i < estado.produtos.length; i++) {
-            fragment.appendChild(criarCard(estado.produtos[i]));
-        }
-        el.grid.appendChild(fragment);
-        el.vazio.classList.toggle("show", estado.produtos.length === 0);
-        el.btnMais.style.display = estado.hasNext ? "inline-flex" : "none";
-        el.btnMais.disabled = estado.carregando;
-    }
-
-    function extrairLista(data) {
-        if (Array.isArray(data)) return data;
-        if (data && Array.isArray(data.products)) return data.products;
-        if (data && Array.isArray(data.produtos)) return data.produtos;
-        if (data && Array.isArray(data.data)) return data.data;
-        return [];
-    }
-
-    function extrairHasNext(data) {
-        if (!data || typeof data !== "object") return false;
-        if (data.hasNextPage) return true;
-        if (data.pageInfo && data.pageInfo.hasNextPage) return true;
-        return false;
-    }
-
-    async function buscar(opcoes) {
-        opcoes = opcoes || {};
-        if (estado.carregando) return;
-
-        if (typeof supabaseClient === "undefined") {
-            setStatus("Configuracao indisponivel no momento.", "error");
-            return;
-        }
-
-        estado.carregando = true;
-        el.btnBuscar.disabled = true;
-        el.btnMais.disabled = true;
-        setStatus("Carregando ofertas...", "loading");
-
-        var pagina = Number(opcoes.pagina || estado.pagina || 1);
-        var acumular = Boolean(opcoes.acumular);
-
-        try {
-            var resultado = await supabaseClient.functions.invoke("shopee-products-v2", {
-                body: {
-                    page: pagina,
-                    limit: estado.limite,
-                    keyword: estado.keyword || ""
-                }
-            });
-
-            if (resultado.error) {
-                var mensagem = resultado.error.message || "Erro ao carregar ofertas.";
-                try {
-                    if (resultado.error.context && typeof resultado.error.context.json === "function") {
-                        var corpo = await resultado.error.context.json();
-                        mensagem = corpo.message || corpo.error || mensagem;
-                    }
-                } catch (e) {}
-                throw new Error(mensagem);
-            }
-
-            var data = resultado.data;
-            var lista = extrairLista(data)
-                .map(normalizarProduto)
-                .filter(function (p) { return p && p.nome; });
-
-            estado.pagina = pagina;
-            estado.hasNext = extrairHasNext(data);
-            estado.produtos = acumular ? estado.produtos.concat(lista) : lista;
-
-            renderizar(acumular);
-
-            if (lista.length === 0 && !acumular) {
-                setStatus("Nenhuma oferta encontrada para esta busca.");
-            } else {
-                setStatus(
-                    estado.produtos.length +
-                    " oferta" + (estado.produtos.length === 1 ? "" : "s") +
-                    (estado.keyword ? " para \"" + estado.keyword + "\"" : "")
-                );
-            }
-        } catch (erro) {
-            console.error(erro);
-            var msg = (erro && erro.message) ? erro.message : "Nao foi possivel carregar as ofertas.";
-            if (/JWT|auth|session|login|Unauthorized|401|403/i.test(msg)) {
-                setStatus("As ofertas publicas estao temporariamente indisponiveis. Tente novamente em instantes.", "error");
-            } else {
-                setStatus(msg, "error");
-            }
-            if (!acumular) {
-                estado.produtos = [];
-                renderizar(false);
-            }
-        } finally {
-            estado.carregando = false;
-            el.btnBuscar.disabled = false;
-            el.btnMais.disabled = false;
-        }
-    }
-
-    function executarBusca() {
-        estado.keyword = (el.busca.value || "").trim();
-        estado.pagina = 1;
-        buscar({ pagina: 1, acumular: false });
-    }
-
-    el.btnBuscar.addEventListener("click", executarBusca);
-
-    el.busca.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            executarBusca();
-        }
-    });
-
-    el.btnMais.addEventListener("click", function () {
-        if (!estado.hasNext || estado.carregando) return;
-        buscar({ pagina: estado.pagina + 1, acumular: true });
-    });
-
-    buscar({ pagina: 1, acumular: false });
+(function(){
+"use strict";
+var estado={pagina:1,limite:20,keyword:"",hasNext:false,carregando:false,produtos:[]};
+var el={grid:document.getElementById("grid"),status:document.getElementById("status"),vazio:document.getElementById("vazio"),busca:document.getElementById("busca"),btnBuscar:document.getElementById("btnBuscar"),btnMais:document.getElementById("btnMais")};
+function numero(v){if(v==null||v==="")return null;var n=Number(v);return Number.isFinite(n)?n:null}
+function moeda(v){var n=numero(v);if(n==null)return"Confira o preco";return n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
+function formatarNumero(v){var n=numero(v);return n==null?null:n.toLocaleString("pt-BR")}
+function escapar(t){return String(t||"").replace(/&/g,"&"+"amp;").replace(/</g,"&"+"lt;").replace(/>/g,"&"+"gt;").replace(/"/g,"&"+"quot;")}
+function normalizarProduto(p){if(!p||typeof p!=="object")return null;return{nome:p.nome||p.productName||"Produto",imagem_url:p.imagem_url||p.imageUrl||"",preco:p.preco!=null?p.preco:(p.priceMin!=null?p.priceMin:p.preco_min),vendas:p.vendas!=null?p.vendas:p.sales,avaliacao:p.avaliacao!=null?p.avaliacao:p.ratingStar,desconto:p.desconto_percentual!=null?p.desconto_percentual:p.priceDiscountRate,link:p.offer_link||p.offerLink||p.produto_link||p.productLink||""}}
+function setStatus(msg,tipo){el.status.textContent=msg||"";el.status.className="status"+(tipo?" "+tipo:"")}
+async function compartilharProduto(produto,botao){var nome=produto.nome||"Produto";var precoTxt=moeda(produto.preco);var link=produto.link||"";var texto="🔥 Olha esse achadinho na Shopee!\n\n"+nome+"\n💰 "+precoTxt+"\n\n👇 Confira:\n"+link;try{if(navigator.share){await navigator.share({title:nome,text:texto,url:link});return}}catch(err){if(err&&err.name==="AbortError")return}try{await navigator.clipboard.writeText(texto);botao.textContent="✅";botao.classList.add("copied");setTimeout(function(){botao.textContent="📤";botao.classList.remove("copied")},1800)}catch(e){alert("Copie o link:\n\n"+link)}}
+function criarCard(produto){var card=document.createElement("article");card.className="card";var nome=produto.nome,img=produto.imagem_url,preco=moeda(produto.preco),link=produto.link,av=numero(produto.avaliacao),vendas=formatarNumero(produto.vendas),desconto=numero(produto.desconto);var imgHtml=img?'<img src="'+escapar(img)+'" alt="'+escapar(nome)+'" loading="lazy" onerror="this.style.display=\'none\'">':'<div style="font-size:40px">📦</div>';var descontoHtml=(desconto!=null&&desconto>0)?'<div class="discount">-'+Math.round(desconto)+'%</div>':'';var metaParts=[];if(av!=null)metaParts.push('⭐ <strong>'+av.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:2})+'</strong>');if(vendas)metaParts.push('🛒 <strong>'+vendas+'</strong>');var shopeeBtn=link?'<a class="btn-shopee" href="'+escapar(link)+'" target="_blank" rel="noopener noreferrer sponsored">🛍️ Ver na Shopee</a>':'<button type="button" class="btn-shopee" disabled>Indisponivel</button>';var shareBtn=link?'<button type="button" class="btn-share" aria-label="Compartilhar">📤</button>':'';card.innerHTML='<div class="card-image">'+imgHtml+descontoHtml+'</div><div class="card-body"><div class="card-name">'+escapar(nome)+'</div>'+(metaParts.length?'<div class="card-meta">'+metaParts.join('')+'</div>':'')+'<div class="card-price">'+escapar(preco)+'</div><div class="card-actions">'+shopeeBtn+shareBtn+'</div></div>';if(link){var btnShare=card.querySelector('.btn-share');if(btnShare)btnShare.addEventListener('click',function(e){e.preventDefault();compartilharProduto(produto,btnShare)})}return card}
+function renderizar(acumular){if(!acumular)el.grid.innerHTML="";var f=document.createDocumentFragment();var inicio=acumular?el.grid.children.length:0;for(var i=inicio;i<estado.produtos.length;i++)f.appendChild(criarCard(estado.produtos[i]));el.grid.appendChild(f);el.vazio.classList.toggle('show',estado.produtos.length===0);el.btnMais.style.display=estado.hasNext?'block':'none'}
+function extrairLista(data){if(Array.isArray(data))return data;if(data&&Array.isArray(data.products))return data.products;if(data&&Array.isArray(data.produtos))return data.produtos;if(data&&Array.isArray(data.data))return data.data;return[]}
+function extrairHasNext(data){return !!(data&&(data.hasNextPage||(data.pageInfo&&data.pageInfo.hasNextPage)))}
+async function garantirSessaoPublica(){var atual=await supabaseClient.auth.getSession();if(atual&&atual.data&&atual.data.session&&atual.data.session.access_token)return atual.data.session.access_token;var anon=await supabaseClient.auth.signInAnonymously();if(anon.error)throw new Error('Acesso publico nao configurado. Ative Authentication > Providers > Anonymous no Supabase.');var token=anon.data&&anon.data.session&&anon.data.session.access_token;if(!token)throw new Error('Nao foi possivel criar sessao publica.');return token}
+async function buscar(opcoes){opcoes=opcoes||{};if(estado.carregando)return;if(typeof supabaseClient==="undefined"){setStatus('Config indisponivel','error');return}estado.carregando=true;el.btnBuscar.disabled=true;el.btnMais.disabled=true;setStatus('Carregando ofertas...','loading');var pagina=Number(opcoes.pagina||estado.pagina||1);var acumular=!!opcoes.acumular;try{var accessToken=await garantirSessaoPublica();var resultado=await supabaseClient.functions.invoke('shopee-products-v2',{body:{page:pagina,limit:estado.limite,keyword:estado.keyword||''},headers:{Authorization:'Bearer '+accessToken}});if(resultado.error){var mensagem=resultado.error.message||'Erro ao carregar';try{if(resultado.error.context&&typeof resultado.error.context.json==='function'){var corpo=await resultado.error.context.json();mensagem=corpo.message||corpo.error||mensagem}}catch(e){}throw new Error(mensagem)}var data=resultado.data;if(data&&(data.error||data.message)&&!extrairLista(data).length){var apiMsg=String(data.error||data.message||'');if(/sessao|session|bearer|token|auth|jwt|login/i.test(apiMsg))throw new Error('A API ainda exige login. Ative Anonymous no Supabase.');throw new Error(apiMsg)}var lista=extrairLista(data).map(normalizarProduto).filter(function(p){return p&&p.nome});estado.pagina=pagina;estado.hasNext=extrairHasNext(data);estado.produtos=acumular?estado.produtos.concat(lista):lista;renderizar(acumular);if(lista.length===0&&!acumular)setStatus('Nenhuma oferta encontrada.');else setStatus(estado.produtos.length+' oferta'+(estado.produtos.length===1?'':'s')+(estado.keyword?' para "'+estado.keyword+'"':''))}catch(erro){console.error(erro);var msg=(erro&&erro.message)?erro.message:'Falha ao carregar';if(/anonymous|Anonymous|Acesso publico/i.test(msg))setStatus('Ative Authentication > Providers > Anonymous no Supabase.','error');else if(/JWT|auth|session|login|Bearer|Sessao|401|403/i.test(msg))setStatus('A API exige sessao. Ative Anonymous no Supabase.','error');else setStatus(msg,'error');if(!acumular){estado.produtos=[];renderizar(false)}}finally{estado.carregando=false;el.btnBuscar.disabled=false;el.btnMais.disabled=false}}
+function executarBusca(){estado.keyword=(el.busca.value||'').trim();estado.pagina=1;buscar({pagina:1,acumular:false})}
+el.btnBuscar.addEventListener('click',executarBusca);
+el.busca.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();executarBusca()}});
+el.btnMais.addEventListener('click',function(){if(!estado.hasNext||estado.carregando)return;buscar({pagina:estado.pagina+1,acumular:true})});
+buscar({pagina:1,acumular:false});
 })();
 </script>
 </body>
